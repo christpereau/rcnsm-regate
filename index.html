@@ -14,7 +14,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%}
 body{font-family:"Source Sans 3",sans-serif;background:var(--deep);color:var(--text);min-height:100vh;height:100%}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 120% 60% at 20% 80%,rgba(0,63,138,.07) 0%,transparent 60%);pointer-events:none;z-index:0}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 120% 60% at 20% 80%,rgba(30,74,117,.18) 0%,transparent 60%);pointer-events:none;z-index:0}
 
 /* ── HEADER ── */
 header{position:sticky;top:0;z-index:100;background:rgba(0,63,138,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.2);padding:0 14px;display:flex;align-items:center;height:60px;gap:8px;color:#fff}
@@ -22,9 +22,9 @@ header{position:sticky;top:0;z-index:100;background:rgba(0,63,138,.97);backdrop-
 .logo small{display:block;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.7);font-family:"Source Sans 3",sans-serif;font-weight:400;text-transform:uppercase}
 
 /* ── MAIN TABS ── */
-.main-tabs{display:flex;gap:2px;background:rgba(255,255,255,.2);border-radius:8px;padding:3px}
-.main-tab{padding:5px 14px;border-radius:6px;border:none;font-family:"Source Sans 3",sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:rgba(255,255,255,.8);background:transparent;transition:all .15s}
-.main-tab.active{background:#fff;color:var(--oar)}
+.main-tabs{display:flex;gap:2px;background:var(--hull);border-radius:8px;padding:3px}
+.main-tab{padding:5px 14px;border-radius:6px;border:none;font-family:"Source Sans 3",sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);background:transparent;transition:all .15s}
+.main-tab.active{background:var(--oar);color:#fff}
 
 /* ── WRAP ── */
 .wrap{z-index:1;padding:16px 13px 80px;min-height:calc(100vh - 60px)}
@@ -37,11 +37,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(0,63,138,.97);backdrop-
 
 /* ── BUTTONS ── */
 .btn{padding:6px 12px;border-radius:7px;border:none;font-family:"Source Sans 3",sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.bgold{background:linear-gradient(135deg,var(--oar),var(--spray));color:#ffffff}
+.bgold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000}
 .boutline{background:transparent;border:1px solid var(--border);color:var(--text)}
 .boar{background:rgba(46,108,164,.2);border:1px solid var(--oar);color:var(--spray)}
 .bdanger{background:transparent;border:1px solid rgba(224,92,58,.4);color:var(--coral)}
-select{background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:"Source Sans 3",sans-serif;font-size:12px;padding:5px 9px;outline:none;-webkit-appearance:none;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+select{background:var(--hull);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:"Source Sans 3",sans-serif;font-size:12px;padding:5px 9px;outline:none;-webkit-appearance:none}
 select option{background:var(--hull)}
 
 /* ── BADGES ── */
@@ -59,7 +59,7 @@ select option{background:var(--hull)}
 .psubt{font-size:12px;color:var(--muted);margin-bottom:16px}
 
 .rowers-grid{display:flex;flex-direction:column;gap:10px}
-.rower-card{background:var(--navy);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 4px rgba(0,63,138,.08)}
+.rower-card{background:var(--navy);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .rower-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)}
 .rower-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-size:16px;font-weight:700;flex-shrink:0}
 .rower-name{font-weight:600;font-size:14px;flex:1}
@@ -79,15 +79,15 @@ select option{background:var(--hull)}
 /* ══════════════════════════════════
    PAGE 2 – INSCRIPTIONS TABLE
 ══════════════════════════════════ */
-.sbar{background:var(--hull);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;box-shadow:0 1px 4px rgba(0,63,138,.08)}
-.sv{font-family:"Playfair Display",serif;font-size:20px;color:var(--oar);line-height:1}
+.sbar{background:var(--hull);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.sv{font-family:"Playfair Display",serif;font-size:20px;color:var(--gold);line-height:1}
 .sl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 
 .ctabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
 .ctab{padding:5px 11px;border-radius:20px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .ctab.active{color:#fff;border-color:var(--active-color,var(--oar));background:color-mix(in srgb,var(--active-color,var(--oar)) 20%,transparent)}
 
-.sticky-head-wrap{position:sticky;top:60px;z-index:50;overflow-x:hidden;background:var(--hull);border:1px solid var(--border);border-bottom:2px solid var(--oar);border-radius:var(--r) var(--r) 0 0}
+.sticky-head-wrap{position:sticky;top:60px;z-index:50;overflow-x:hidden;background:var(--hull);border:1px solid var(--border);border-bottom:2px solid var(--border);border-radius:var(--r) var(--r) 0 0}
 .table-outer{border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);background:var(--navy)}
 .table-body-wrap{overflow-x:auto}
 .sticky-head-wrap table,.table-body-wrap table{border-collapse:collapse;table-layout:fixed}
@@ -104,14 +104,14 @@ select option{background:var(--hull)}
 /* ── MODAL ── */
 .mbg{display:none;position:fixed;inset:0;background:rgba(4,10,18,.88);z-index:500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:18px 12px}
 .mbg.open{display:flex}
-.modal{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:20px;max-width:600px;width:100%;margin:auto;box-shadow:0 8px 32px rgba(0,63,138,.15)}
+.modal{background:var(--navy);border:1px solid var(--border);border-radius:var(--r);padding:20px;max-width:600px;width:100%;margin:auto}
 .mtitle{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:14px}
 .mrow{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--hull);border-radius:7px;margin-bottom:4px;font-size:12px;gap:8px}
 .csect{margin-bottom:14px}
 .csect-head{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--border)}
 
 /* ── FLASH ── */
-#_fl{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#003f8a;border:1px solid #1565c0;color:white;border-radius:8px;padding:9px 18px;font-size:13px;z-index:9999;box-shadow:0 6px 20px rgba(0,63,138,.3);transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;opacity:0}
+#_fl{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#112840;border:1px solid #1e3a55;border-radius:8px;padding:9px 18px;font-size:13px;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,.5);transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;opacity:0}
 
 .legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:10px;align-items:center}
 .ld{width:13px;height:13px;border-radius:3px;flex-shrink:0;border:1px solid transparent}
@@ -222,7 +222,10 @@ select option{background:var(--hull)}
       <div class="ptitle">Bateaux &amp; Avirons</div>
       <div class="psubt">Assignez un bateau, des avirons et les rameurs à chaque course.</div>
     </div>
-    <button class="btn bgold" onclick="exportPdfBateaux()">&#128196; Export PDF</button>
+    <div style="display:flex;gap:6px">
+      <button class="btn boutline" onclick="openGestionBateaux()" style="font-size:12px">&#9881; G&#233;rer</button>
+      <button class="btn bgold" onclick="exportPdfBateaux()">&#128196; Export PDF</button>
+    </div>
   </div>
   <div id="bateauxTabs" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px"></div>
   <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
@@ -271,6 +274,65 @@ select option{background:var(--hull)}
 </div>
 </div>
 
+<!-- ══ Modale Gestion ══ -->
+<div class="mbg" id="gestionBg" onclick="if(event.target===this)closeGestionBateaux()" style="display:none">
+  <div class="modal" style="max-width:520px;max-height:82vh;overflow-y:auto">
+    <div class="mtitle">&#9881; G&#233;rer</div>
+    <div style="display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px;flex-wrap:wrap">
+      <button id="gtab-rameurs" class="btn boutline" style="font-size:11px" onclick="switchGTab('rameurs')">&#128388; Rameurs</button>
+      <button id="gtab-bateaux" class="btn bgold" style="font-size:11px" onclick="switchGTab('bateaux')">&#9973; Bateaux</button>
+      <button id="gtab-avirons" class="btn boutline" style="font-size:11px" onclick="switchGTab('avirons')">&#129528; Avirons</button>
+    </div>
+
+    <!-- PANEL RAMEURS -->
+    <div id="gpanel-rameurs" style="display:none">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Ajoutez, renommez ou supprimez des rameurs. Les modifications sont sauvegard&#233;es dans Firebase.</div>
+      <div id="rowersList" style="margin-bottom:12px;max-height:300px;overflow-y:auto"></div>
+      <div style="background:var(--hull);border:1px solid var(--border);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:7px">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">Nouveau rameur</div>
+        <div style="display:flex;gap:6px">
+          <input id="newRowerName" type="text" placeholder="Pr&#233;nom Nom" style="flex:2;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 9px;outline:none">
+          <select id="newRowerCat" style="flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 7px;outline:none">
+            <option>U13</option><option>U15</option><option>U17</option><option selected>U19</option>
+            <option>U23</option><option>MM</option><option>MW</option>
+          </select>
+          <select id="newRowerGender" style="flex:0 0 60px;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 7px;outline:none">
+            <option value="M">&#9794; M</option><option value="W">&#9792; F</option>
+          </select>
+        </div>
+        <button class="btn bgold" style="font-size:12px;align-self:flex-end" onclick="addRowerFromPanel()">+ Ajouter le rameur</button>
+      </div>
+    </div>
+
+    <!-- PANEL BATEAUX -->
+    <div id="gpanel-bateaux">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">G&#233;rez les noms de bateaux par type. <strong>Sauvegarder</strong> pour appliquer.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px" id="btypeSelector"></div>
+      <div id="bateauxList" style="margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <input id="newBateauInput" type="text" placeholder="Nom du nouveau bateau..." style="flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 9px;outline:none" onkeydown="if(event.key==='Enter')addBateauItem()">
+        <button class="btn bgold" style="font-size:11px" onclick="addBateauItem()">+ Ajouter</button>
+      </div>
+    </div>
+
+    <!-- PANEL AVIRONS -->
+    <div id="gpanel-avirons" style="display:none">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">G&#233;rez la liste des paires d&#x27;avirons. <strong>Sauvegarder</strong> pour appliquer.</div>
+      <div id="avironsList" style="margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <input id="newAvironInput" type="text" placeholder="Nom de la paire d'avirons..." style="flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 9px;outline:none" onkeydown="if(event.key==='Enter')addAvironItem()">
+        <button class="btn bgold" style="font-size:11px" onclick="addAvironItem()">+ Ajouter</button>
+      </div>
+    </div>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn boutline" onclick="closeGestionBateaux()">Fermer</button>
+      <button class="btn bgold" id="btnSaveCatalog" onclick="saveCatalogAndClose()">&#10003; Sauvegarder bateaux &amp; avirons</button>
+    </div>
+  </div>
+</div>
+
 <!-- Summary modal -->
 <div class="mbg" id="mbg" onclick="if(event.target===this)closeSummary()">
   <div class="modal">
@@ -282,6 +344,17 @@ select option{background:var(--hull)}
 </div>
 <div id="_fl"></div>
 
+<!-- Firebase config injectée au déploiement — ne jamais mettre les clés ici -->
+<script>
+  window.__ENV__ = {
+    FIREBASE_API_KEY:             "AIzaSyBqrhteGQUfOz8YjIhcNwrzgIkChq7HlvE",
+    FIREBASE_AUTH_DOMAIN:         "jeune-entrainement.firebaseapp.com",
+    FIREBASE_PROJECT_ID:          "jeune-entrainement",
+    FIREBASE_STORAGE_BUCKET:      "jeune-entrainement.firebasestorage.app",
+    FIREBASE_MESSAGING_SENDER_ID: "588281323716",
+    FIREBASE_APP_ID:              "1:588281323716:web:df6edb41921ea321082991"
+  };
+</script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
@@ -289,15 +362,15 @@ console.log("Script starting...");
 window.addEventListener("error", function(e){ console.error("Global JS error:", e.message, "line:", e.lineno); });
 // Test Firebase write on load
 window.addEventListener("load", function(){
-  firebase.firestore().collection("regata_assignments").limit(1).get()
+  firebase.firestore().collection("rcnsm_regata_assignments").limit(1).get()
     .then(function(s){ console.log("regata_assignments reachable, docs:", s.size); })
     .catch(function(e){ console.error("regata_assignments ERROR:", e.message); });
 });
-firebase.initializeApp({apiKey:"AIzaSyBqrhteGQUfOz8YjIhcNwrzgIkChq7HlvE",authDomain:"jeune-entrainement.firebaseapp.com",projectId:"jeune-entrainement",storageBucket:"jeune-entrainement.firebasestorage.app",messagingSenderId:"588281323716",appId:"1:588281323716:web:df6edb41921ea321082991"});
+firebase.initializeApp({apiKey:window.__ENV__.FIREBASE_API_KEY,authDomain:window.__ENV__.FIREBASE_AUTH_DOMAIN,projectId:window.__ENV__.FIREBASE_PROJECT_ID,storageBucket:window.__ENV__.FIREBASE_STORAGE_BUCKET,messagingSenderId:window.__ENV__.FIREBASE_MESSAGING_SENDER_ID,appId:window.__ENV__.FIREBASE_APP_ID});
 var db=firebase.firestore();
 
 /* ══ GENDER ══ */
-var G={"s01":"M","s02":"W","s03":"M","s04":"M","s05":"W","s06":"W"};
+var G={};
 
 /* ══ AVATAR COLORS ══ */
 var AVCOLS=["#2e6ca4","#d4a843","#2eb87a","#e05c3a","#9b59b6","#1abc9c","#e67e22","#3498db"];
@@ -315,6 +388,7 @@ var COMPS=[
   {c:"1", t:"9h30",  l:"1x MU13",        d:"500m",  catM:["U13"]},
   {c:"2", t:"9h36",  l:"2x WU13",        d:"500m",  catW:["U13"]},
   {c:"3", t:"9h43",  l:"1x WU15",        d:"1000m", catW:["U15"]},
+  {c:"4", t:"9h50",  l:"2x Masters M&W", d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"5", t:"10h11", l:"4x M",           d:"2000m", catM:["U19","U23"]},
   {c:"6", t:"10h21", l:"1x W",           d:"2000m", catW:["U19","U23"]},
   {c:"7", t:"10h30", l:"2x WU19",        d:"2000m", catW:["U19"],upW:["U17"]},
@@ -322,8 +396,9 @@ var COMPS=[
   {c:"9", t:"11h03", l:"2x MU19",        d:"2000m", catM:["U19"],upM:["U17"]},
   {c:"10", t:"11h13", l:"1x M",           d:"2000m", catM:["U19","U23"]},
   {c:"11", t:"11h22", l:"1x MU15",        d:"1000m", catM:["U15"]},
-  {c:"12", t:"11h39", l:"1x Déb M",       d:"1000m", rowerIds:["r02","r14","r16"]},
-  {c:"13", t:"11h50", l:"2x Déb W",       d:"1000m", rowerIds:["r04","r13"]},
+  {c:"12", t:"11h39", l:"1x Déb M",       d:"1000m", rowerIds:[]},
+  {c:"13", t:"11h50", l:"2x Déb W",       d:"1000m", rowerIds:[]},
+  {c:"14", t:"12h00", l:"4x/4- Masters",  d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"15", t:"12h08", l:"2x Open",        d:"1000m", catM:["U17","U19","U23"],catW:["U17","U19","U23"]},
   {c:"17", t:"13h29", l:"1x WU13",        d:"500m",  catW:["U13"]},
   {c:"18", t:"13h35", l:"2x MU13",        d:"500m",  catM:["U13"]},
@@ -334,6 +409,7 @@ var COMPS=[
   {c:"23", t:"14h21", l:"2x W",           d:"2000m", catW:["U19","U23"]},
   {c:"24", t:"14h30", l:"1x LM",          d:"2000m", catM:["U23"]},
   {c:"25", t:"14h35", l:"1x WU19",        d:"2000m", catW:["U19"],upW:["U17"]},
+  {c:"26m",t:"14h44", l:"1x Masters M&W", d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"26", t:"15h05", l:"2x WU15",        d:"1000m", catW:["U15"]},
   {c:"27", t:"15h12", l:"4x MU15",        d:"1000m", catM:["U15"]},
   {c:"28", t:"15h19", l:"1x MU19",        d:"2000m", catM:["U19"],upM:["U17"]},
@@ -343,8 +419,8 @@ var COMPS=[
   {c:"32", t:"15h57", l:"2- M",           d:"2000m", catM:["U19","U23"]},
   {c:"33", t:"16h02", l:"1x WU17",        d:"2000m", catW:["U17"]},
   {c:"34", t:"16h07", l:"4x W",           d:"2000m", catW:["U19","U23"]},
-  {c:"35", t:"16h20", l:"2x Déb M",       d:"1000m", rowerIds:["r02","r14","r16"]},
-  {c:"36", t:"16h27", l:"1x Déb W",       d:"1000m", rowerIds:["r04","r13"]},
+  {c:"35", t:"16h20", l:"2x Déb M",       d:"1000m", rowerIds:[]},
+  {c:"36", t:"16h27", l:"1x Déb W",       d:"1000m", rowerIds:[]},
   {c:"37", t:"16h34", l:"4x WU15",        d:"1000m", catW:["U15"]},
   {c:"38", t:"16h38", l:"2x MU15",        d:"1000m", catM:["U15"]},
   {c:"39", t:"16h45", l:"8+ Open",        d:"1000m", catM:["U15","U17","U19","U23"],catW:["U15","U17","U19","U23"]},
@@ -352,19 +428,22 @@ var COMPS=[
 {id:"rcnd",date:"2026-05-24",name:"1000m d'Anhée",deadline:"2026-05-15",color:"#d4a843",
  days:["Présent"],
  courses:[
+  {c:"A1",  t:"10h05", l:"4X Masters",      d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"A2",  t:"10h15", l:"2X WU15",        d:"1000m", catW:["U15"]},
   {c:"A3",  t:"10h20", l:"1x MU15 Pol.",   d:"1000m", catM:["U15"]},
-  {c:"A4",  t:"10h35", l:"2X M Beg",       d:"1000m", rowerIds:["r02","r14","r16"]},
+  {c:"A4",  t:"10h35", l:"2X M Beg",       d:"1000m", rowerIds:[]},
   {c:"A5",  t:"10h45", l:"1X W",           d:"1000m", catW:["U19","U23"]},
   {c:"A6",  t:"10h55", l:"1X MU19-17",     d:"1000m", catM:["U17","U19"],upM:["U17"]},
   {c:"A7",  t:"11h05", l:"2X WU19-17",     d:"1000m", catW:["U17","U19"],upW:["U17"]},
   {c:"A8",  t:"11h15", l:"4X Open",        d:"1000m", catM:["U17","U19","U23"],catW:["U17","U19","U23"]},
-  {c:"A9",  t:"11h25", l:"1X M Beg.",      d:"1000m", rowerIds:["r02","r14","r16"]},
-  {c:"A10", t:"11h35", l:"1X W Beg",       d:"1000m", rowerIds:["r04","r13"]},
+  {c:"A9",  t:"11h25", l:"1X M Beg.",      d:"1000m", rowerIds:[]},
+  {c:"A10", t:"11h35", l:"1X W Beg",       d:"1000m", rowerIds:[]},
   {c:"A11", t:"11h40", l:"2- M",           d:"1000m", catM:["U19","U23"]},
   {c:"A12", t:"11h45", l:"4X MU15",        d:"1000m", catM:["U15"]},
   {c:"B13", t:"13h00", l:"1X M",           d:"1000m", catM:["U19","U23"]},
   {c:"B14", t:"13h05", l:"2X MU19-17",     d:"1000m", catM:["U17","U19"],upM:["U17"]},
+  {c:"B15", t:"13h20", l:"1x W Masters",    d:"1000m", catW:["U23"],master:true},
+  {c:"B16", t:"13h30", l:"1x M Masters",    d:"1000m", catM:["U23"],master:true},
   {c:"B17", t:"13h50", l:"2X M",           d:"1000m", catM:["U19","U23"]},
   {c:"B18", t:"14h00", l:"1X WU15 Pol.",   d:"1000m", catW:["U15"]},
   {c:"B19", t:"14h10", l:"2X W",           d:"1000m", catW:["U19","U23"]},
@@ -372,37 +451,43 @@ var COMPS=[
   {c:"B21", t:"14h25", l:"1X MU13",        d:"500m",  catM:["U13"]},
   {c:"B22", t:"14h35", l:"1X WU13",        d:"500m",  catW:["U13"]},
   {c:"C23", t:"15h35", l:"1X WU19-17",     d:"1000m", catW:["U17","U19"],upW:["U17"]},
+  {c:"C24", t:"15h40", l:"2x W Masters",    d:"1000m", catW:["U23"],master:true},
+  {c:"C25", t:"15h45", l:"2x M Masters",    d:"1000m", catM:["U23"],master:true},
   {c:"C26", t:"16h00", l:"2- W",           d:"1000m", catW:["U19","U23"]},
   {c:"C27", t:"16h05", l:"2X MU15",        d:"1000m", catM:["U15"]},
   {c:"C28", t:"16h10", l:"4X WU15",        d:"1000m", catW:["U15"]},
-  {c:"C29", t:"16h20", l:"2X W Beg.",      d:"1000m", rowerIds:["r04","r13"]},
+  {c:"C29", t:"16h20", l:"2X W Beg.",      d:"1000m", rowerIds:[]},
   {c:"C30", t:"16h30", l:"8+ Open",        d:"1000m", catM:["U15","U17","U19","U23"],catW:["U15","U17","U19","U23"]},
 ]},
 {id:"uliege",date:"2026-08-30",name:"1000m de Liège",deadline:"2026-08-18",color:"#2eb87a",
  days:["Présent"],
  courses:[
+  {c:"A1",  t:"10h05", l:"4x Masters",     d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"A2",  t:"10h15", l:"2-M & 2-MU23",  d:"1000m", catM:["U19","U23"]},
   {c:"A3",  t:"10h25", l:"1x MU15 pol.",   d:"1000m", catM:["U15"]},
-  {c:"A4",  t:"10h35", l:"2x M Beg",       d:"1000m", rowerIds:["r02","r14","r16"]},
+  {c:"A4",  t:"10h35", l:"2x M Beg",       d:"1000m", rowerIds:[]},
   {c:"A5",  t:"10h45", l:"1x WU23 & W",    d:"1000m", catW:["U19","U23"]},
   {c:"A6",  t:"10h55", l:"1x MU19",        d:"1000m", catM:["U19"],upM:["U17"]},
   {c:"A7",  t:"11h05", l:"2x WU17 & WU19", d:"1000m", catW:["U17","U19"],upW:["U17"]},
-  {c:"A8",  t:"11h15", l:"1x W Beg.",      d:"1000m", rowerIds:["r04","r13"]},
+  {c:"A8",  t:"11h15", l:"1x W Beg.",      d:"1000m", rowerIds:[]},
   {c:"A9",  t:"11h25", l:"4x M",           d:"1000m", catM:["U19","U23"]},
   {c:"A10", t:"11h35", l:"2x WU15",        d:"1000m", catW:["U15"]},
   {c:"B12", t:"13h05", l:"2x WU23 & 2xW",  d:"1000m", catW:["U19","U23"]},
   {c:"B13", t:"13h10", l:"1x WU17 & WU19", d:"1000m", catW:["U17","U19"],upW:["U17"]},
   {c:"B14", t:"13h15", l:"1x MU23 & 1xM",  d:"1000m", catM:["U19","U23"]},
   {c:"B15", t:"13h25", l:"2x MU19",        d:"1000m", catM:["U19"],upM:["U17"]},
-  {c:"B16", t:"13h30", l:"1x M Beg.",      d:"1000m", rowerIds:["r02","r14","r16"]},
+  {c:"B16", t:"13h30", l:"1x M Beg.",      d:"1000m", rowerIds:[]},
+  {c:"B17", t:"13h40", l:"2x W Masters",    d:"1000m", catW:["U23"],master:true},
+  {c:"B18", t:"13h50", l:"2x M Masters",    d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"B19", t:"14h05", l:"1x MU17",        d:"1000m", catM:["U17"]},
   {c:"B20", t:"14h15", l:"4-M",            d:"1000m", catM:["U19","U23"]},
   {c:"C21", t:"15h35", l:"2x MU23 & 2xM",  d:"1000m", catM:["U19","U23"]},
   {c:"C22", t:"15h40", l:"4x W",           d:"1000m", catW:["U19","U23"]},
   {c:"C23", t:"15h45", l:"2x MU15",        d:"1000m", catM:["U15"]},
+  {c:"C24", t:"15h52", l:"1x Master",       d:"1000m", catM:["U23"],catW:["U23"],master:true},
   {c:"C25", t:"16h05", l:"1x WU15 pol.",   d:"1000m", catW:["U15"]},
   {c:"C26", t:"16h15", l:"2x MU17",        d:"1000m", catM:["U17"]},
-  {c:"C27", t:"16h20", l:"2x W Beg.",      d:"1000m", rowerIds:["r04","r13"]},
+  {c:"C27", t:"16h20", l:"2x W Beg.",      d:"1000m", rowerIds:[]},
   {c:"C28", t:"16h25", l:"8+ Open",        d:"1000m", catM:["U15","U17","U19","U23"],catW:["U15","U17","U19","U23"]},
 ]},
 {id:"krcg",date:"2026-09-12",name:"Regatta Club Gent",deadline:"2026-09-01",color:"#e05c3a",
@@ -412,8 +497,10 @@ var COMPS=[
   {c:"002",t:"Sa 10h10",l:"2x WU13",        d:"500m",  catW:["U13"],          day:"Samedi"},
   {c:"003",t:"Sa 10h30",l:"1x MU15",        d:"1000m", catM:["U15"],          day:"Samedi"},
   {c:"004",t:"Sa 11h10",l:"2x WU15",        d:"1000m", catW:["U15"],          day:"Samedi"},
-  {c:"005",t:"Sa 11h20",l:"1x W Beg",       d:"1000m", rowerIds:["r04","r13"],day:"Samedi"},
-  {c:"006",t:"Sa 11h30",l:"2x M Beg",       d:"1000m", rowerIds:["r02","r14","r16"],day:"Samedi"},
+  {c:"005",t:"Sa 11h20",l:"1x W Beg",       d:"1000m", rowerIds:[],day:"Samedi"},
+  {c:"006",t:"Sa 11h30",l:"2x M Beg",       d:"1000m", rowerIds:[],day:"Samedi"},
+  {c:"007",t:"Sa 11h35",l:"8+ Masters",      d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Samedi"},
+  {c:"008",t:"Sa 13h15",l:"1x Masters",      d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Samedi"},
   {c:"101",t:"Sa 13h45",l:"4x MixteU19",    d:"2000m", catM:["U17","U19"],catW:["U17","U19"],upM:["U17"],upW:["U17"],day:"Samedi"},
   {c:"102",t:"Sa 13h50",l:"1x MU23/M",      d:"2000m", catM:["U19","U23"],    day:"Samedi"},
   {c:"103",t:"Sa 14h00",l:"1x LM",          d:"2000m", catM:["U23"],          day:"Samedi"},
@@ -437,10 +524,12 @@ var COMPS=[
   {c:"121",t:"Sa 16h45",l:"4x WU17/19",     d:"2000m", catW:["U17","U19"],upW:["U17"],day:"Samedi"},
   {c:"122",t:"Sa 16h50",l:"4- WU19/W",      d:"2000m", catW:["U19","U23"],    day:"Samedi"},
   {c:"123",t:"Sa 17h00",l:"8+ M",           d:"2000m", catM:["U19","U23"],    day:"Samedi"},
-  {c:"010",t:"Di 10h00",l:"W Beg 1X",       d:"1000m", rowerIds:["r04","r13"],day:"Dimanche"},
-  {c:"011",t:"Di 10h10",l:"M Beg 2X",       d:"1000m", rowerIds:["r02","r14","r16"],day:"Dimanche"},
+  {c:"010",t:"Di 10h00",l:"W Beg 1X",       d:"1000m", rowerIds:[],day:"Dimanche"},
+  {c:"011",t:"Di 10h10",l:"M Beg 2X",       d:"1000m", rowerIds:[],day:"Dimanche"},
   {c:"012",t:"Di 10h20",l:"W U15 4X",       d:"1000m", catW:["U15"],          day:"Dimanche"},
-  {c:"013",t:"Di 10h30",l:"M U15 1X",       d:"1000m", catM:["U15"],          day:"Dimanche"},
+  {c:"013",t:"Di 10h15",l:"2x Masters",      d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Dimanche"},
+  {c:"014",t:"Di 10h30",l:"M U15 1X",       d:"1000m", catM:["U15"],          day:"Dimanche"},
+  {c:"018",t:"Di 14h30",l:"4x Masters",      d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Dimanche"},
   {c:"206",t:"Di 11h10",l:"W U19 4-",       d:"2000m", catW:["U19"],upW:["U17"],day:"Dimanche"},
   {c:"207",t:"Di 11h20",l:"M U19 8+",       d:"2000m", catM:["U19"],upM:["U17"],day:"Dimanche"},
   {c:"208",t:"Di 11h30",l:"M 4-",           d:"2000m", catM:["U19","U23"],    day:"Dimanche"},
@@ -456,8 +545,8 @@ var COMPS=[
 {id:"bk",date:"2026-09-26",name:"BK Lange Boten",deadline:"2026-09-18",color:"#9b59b6",
  days:["Samedi","Dimanche"],
  courses:[
-  {c:"101",t:"Sa 9h40", l:"M Beg 1X",      d:"1000m", rowerIds:["r02","r14","r16"],day:"Samedi"},
-  {c:"102",t:"Sa 9h50", l:"W Beg 2X",      d:"1000m", rowerIds:["r04","r13"],day:"Samedi"},
+  {c:"101",t:"Sa 9h40", l:"M Beg 1X",      d:"1000m", rowerIds:[],day:"Samedi"},
+  {c:"102",t:"Sa 9h50", l:"W Beg 2X",      d:"1000m", rowerIds:[],day:"Samedi"},
   {c:"103",t:"Sa 10h00",l:"M U15 4X",      d:"1000m", catM:["U15"],          day:"Samedi"},
   {c:"104",t:"Sa 10h10",l:"W U15 1X",      d:"1000m", catW:["U15"],          day:"Samedi"},
   {c:"105",t:"Sa 10h30",l:"W U19 4X",      d:"2000m", catW:["U19"],upW:["U17"],day:"Samedi"},
@@ -470,15 +559,17 @@ var COMPS=[
   {c:"112",t:"Sa 14h30",l:"LM 4X",         d:"2000m", catM:["U23"],          day:"Samedi"},
   {c:"113",t:"Sa 14h40",l:"W U19 8+",      d:"2000m", catW:["U19"],upW:["U17"],day:"Samedi"},
   {c:"114",t:"Sa 14h50",l:"W/M Mixte 4X",  d:"2000m", catM:["U19"],catW:["U19"],upM:["U17"],upW:["U17"],day:"Samedi"},
+  {c:"115",t:"Sa 15h10",l:"Masters 4-",     d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Samedi"},
   {c:"116",t:"Sa 15h20",l:"M U15 2X",      d:"1000m", catM:["U15"],          day:"Samedi"},
   {c:"117",t:"Sa 15h40",l:"M U17 2X",      d:"2000m", catM:["U17"],          day:"Samedi"},
   {c:"118",t:"Sa 15h50",l:"W U17 1X",      d:"2000m", catW:["U17"],          day:"Samedi"},
   {c:"119",t:"Sa 16h00",l:"M U19 4-",      d:"2000m", catM:["U19"],upM:["U17"],day:"Samedi"},
   {c:"120",t:"Sa 16h10",l:"W 8+",          d:"2000m", catW:["U19","U23"],    day:"Samedi"},
-  {c:"201",t:"Di 10h00",l:"W Beg 1X",      d:"1000m", rowerIds:["r04","r13"],day:"Dimanche"},
-  {c:"202",t:"Di 10h10",l:"M Beg 2X",      d:"1000m", rowerIds:["r02","r14","r16"],day:"Dimanche"},
+  {c:"201",t:"Di 10h00",l:"W Beg 1X",      d:"1000m", rowerIds:[],day:"Dimanche"},
+  {c:"202",t:"Di 10h10",l:"M Beg 2X",      d:"1000m", rowerIds:[],day:"Dimanche"},
   {c:"203",t:"Di 10h20",l:"W U15 4X",      d:"1000m", catW:["U15"],          day:"Dimanche"},
   {c:"204",t:"Di 10h30",l:"M U15 1X",      d:"1000m", catM:["U15"],          day:"Dimanche"},
+  {c:"205",t:"Di 10h50",l:"Masters 4X",     d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Dimanche"},
   {c:"206",t:"Di 11h10",l:"W U19 4-",      d:"2000m", catW:["U19"],upW:["U17"],day:"Dimanche"},
   {c:"207",t:"Di 11h20",l:"M U19 8+",      d:"2000m", catM:["U19"],upM:["U17"],day:"Dimanche"},
   {c:"208",t:"Di 11h30",l:"M 4-",          d:"2000m", catM:["U19","U23"],    day:"Dimanche"},
@@ -487,7 +578,8 @@ var COMPS=[
   {c:"211",t:"Di 14h10",l:"W U17 2X",      d:"2000m", catW:["U17"],          day:"Dimanche"},
   {c:"212",t:"Di 14h20",l:"M U17 1X",      d:"2000m", catM:["U17"],          day:"Dimanche"},
   {c:"213",t:"Di 14h40",l:"W U15 2X",      d:"1000m", catW:["U15"],          day:"Dimanche"},
-  {c:"216",t:"Di 15h20",l:"LW 4X",         d:"2000m", catW:["U23"],          day:"Dimanche"},
+  {c:"215M",t:"Di 15h20",l:"Masters 8+",    d:"1000m", catM:["U23"],catW:["U23"],master:true,day:"Dimanche"},
+  {c:"216",t:"Di 15h40",l:"LW 4X",         d:"2000m", catW:["U23"],          day:"Dimanche"},
   {c:"217",t:"Di 15h40",l:"W/M U19 Mixte", d:"2000m", catM:["U19"],catW:["U19"],upM:["U17"],upW:["U17"],day:"Dimanche"},
   {c:"219",t:"Di 16h00",l:"M 8+",          d:"2000m", catM:["U19","U23"],    day:"Dimanche"},
 ]}
@@ -498,24 +590,32 @@ var rowers=[],regs={},pres={},loaded=false,activeCid=COMPS[0].id;
 // pres[rowerId][compId] = Set of day labels present (e.g. {"Présent"} or {"Samedi","Dimanche"})
 
 /* ══ ELIGIBILITY ══ */
-function catFromBirth(birthYear){
-  var season=new Date().getFullYear();
-  var age=season-birthYear;
-  if(age<=12) return "U13";
-  if(age<=14) return "U15";
-  if(age<=16) return "U17";
-  if(age<=18) return "U19";
-  return "U23";
-}
-
 function elig(rower,course){
+  // Beg/Déb: liste explicite de rameurs
   if(course.rowerIds!==undefined) return course.rowerIds.indexOf(rower.id)!==-1?"normal":false;
 
-  var g=G[rower.id]||"M";
-  var cat=rower.birthYear?catFromBirth(rower.birthYear):(rower.cat||"U23");
-  var dist=course.d||"";
+  var g=G[rower.id]||"M", cat=rower.cat, dist=course.d||"";
   var catM=course.catM||[], catW=course.catW||[];
   var isOpen=catM.length>0&&catW.length>0; // catM ET catW = open/mixte
+
+  // ── Masters (MM / MW) ──
+  // MM = hommes Master, MW = femmes Master
+  if(cat==="MM"||cat==="MW"){
+    var masterGender=(cat==="MM")?"M":"W";
+    var isMasterCourse=course.master===true;
+    if(isMasterCourse){
+      // Course spécifique Masters → éligible selon genre
+      if(isOpen) return "normal";
+      if(masterGender==="M" && catM.indexOf("U23")!==-1) return "normal";
+      if(masterGender==="W" && catW.indexOf("U23")!==-1) return "normal";
+      return false;
+    }
+    // Course senior non-Master (M, W, Open) → éligible
+    if(isOpen) return "normal";
+    if(masterGender==="M" && catM.indexOf("U23")!==-1) return "normal";
+    if(masterGender==="W" && catW.indexOf("U23")!==-1) return "normal";
+    return false;
+  }
 
   // Courses éligibles selon le genre du rameur (+ open = les deux)
   var myCats=(g==="M")?catM:catW;
@@ -576,23 +676,15 @@ var _fbt=setTimeout(function(){
   document.getElementById("rowersGrid").innerHTML='<div style="padding:20px;text-align:center;color:var(--coral)">&#9888; Impossible de contacter Firebase. Ouvrez ce fichier directement dans votre navigateur.</div>';
 },8000);
 
-// Chargement des rameurs RCNSM depuis Firebase
 db.collection("rcnsm_rowers").onSnapshot(function(snap){
   clearTimeout(_fbt);
-  rowers=snap.docs.map(function(d){
-    var v=Object.assign({id:d.id},d.data());
-    // Calcule la cat depuis birthYear si disponible
-    if(v.birthYear) v.cat=catFromBirth(v.birthYear);
-    return v;
-  }).sort(function(a,b){return a.name.localeCompare(b.name);});
+  rowers=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());}).sort(function(a,b){return a.name.localeCompare(b.name);});
   if(!loaded){loadAll();}else{renderAll();}
-},function(e){
-  ld(false);
-  document.getElementById("rowersGrid").innerHTML='<div style="padding:20px;text-align:center;color:var(--coral)">&#9888; Impossible de charger les rameurs RCNSM.</div>';
 });
 
 function loadAll(){
   loadAssignments();
+  loadCatalog();
   // Load registrations
   db.collection("rcnsm_regata_inscriptions").onSnapshot(function(snap){
     regs={};
@@ -936,14 +1028,27 @@ function flash(m,t){var e=document.getElementById("_fl");e.innerHTML=m;e.style.c
 /* ══════════════════════════════════════════
    BATEAUX & AVIRONS
 ══════════════════════════════════════════ */
+/* ── Catalogue bateaux & avirons (source de vérité, surchargeable via Firebase) ── */
 var BATEAUX = {
-  "1x": ["Rameuse","La dame de nage","Gand by Night","La pelle de la Meuse","2015","1865","Cash &#224; l&#39;Eau","Barracuda","Salani","Filipi perso"],
-  "2x": ["Le Molignée","Forever Meuse","Double Salani","Le Copère","Le double jaune"],
-  "2-": ["Le Copère","Le Molignée","Empacher"],
-  "4x": ["Cap Départ","Phoenix"],
-  "4-": ["Le Phoenix"]
+  "1x":[],"2x":[],"2-":[],"4x":[],"4-":[],"4+":[],"8+":[]
 };
-var AVIRONS = ["Aviron de pointe","Concept2","Concept2 skinny","100","Bantam"];
+var AVIRONS = [];
+
+function loadCatalog(){
+  db.collection("rcnsm_catalog").onSnapshot(function(snap){
+    snap.docs.forEach(function(d){
+      var v=d.data();
+      if(d.id==="bateaux" && v.data){ BATEAUX=v.data; }
+      if(d.id==="avirons" && v.data){ AVIRONS=v.data; }
+    });
+    renderBateaux();
+  });
+}
+
+function saveCatalog(){
+  db.collection("rcnsm_catalog").doc("bateaux").set({data:BATEAUX});
+  db.collection("rcnsm_catalog").doc("avirons").set({data:AVIRONS});
+}
 
 // Detect boat type from course label
 function detectBoatType(label){
@@ -1082,6 +1187,185 @@ function renderBateaux(){
   renderSummaryBateaux();
 }
 
+
+
+
+/* ══ GESTION (Rameurs / Bateaux / Avirons) ══ */
+var activeGTab = "bateaux";
+var activeGBtype = "1x";
+var BTYPES = ["1x","2x","2-","4x","4-","4+","8+","autre"];
+
+function openGestionBateaux(){
+  document.getElementById("gestionBg").style.display="flex";
+  switchGTab("bateaux");
+}
+function closeGestionBateaux(){
+  document.getElementById("gestionBg").style.display="none";
+}
+function saveCatalogAndClose(){
+  saveCatalog();
+  flash("Catalogue sauvegard&#233; &#10003;","ok");
+  closeGestionBateaux();
+}
+function switchGTab(tab){
+  activeGTab=tab;
+  ["rameurs","bateaux","avirons"].forEach(function(t){
+    var p=document.getElementById("gpanel-"+t);
+    var b=document.getElementById("gtab-"+t);
+    if(p) p.style.display=(t===tab)?"block":"none";
+    if(b) b.className=(t===tab)?"btn bgold":"btn boutline";
+  });
+  // Show/hide save button (only for bateaux/avirons)
+  var sb=document.getElementById("btnSaveCatalog");
+  if(sb) sb.style.display=(tab==="rameurs")?"none":"inline-block";
+  if(tab==="bateaux") renderGBateaux();
+  else if(tab==="avirons") renderGAvirons();
+  else renderGRameurs();
+}
+
+/* ── Rameurs ── */
+function renderGRameurs(){
+  var h="";
+  if(!rowers.length){
+    h='<div style="color:var(--muted);font-size:11px;padding:8px 0">Aucun rameur dans Firebase.</div>';
+  }
+  rowers.forEach(function(rower){
+    var g=rower.gender||"M";
+    var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
+    h+='<div style="display:flex;align-items:center;gap:7px;padding:5px 8px;background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:5px">';
+    h+='<span style="font-size:10px;color:'+(g==="M"?"#7eceff":"#ffb3d1")+'">'+(g==="M"?"&#9794;":"&#9792;")+'</span>';
+    h+='<span style="flex:1;font-size:12px;font-weight:600">'+xe(rower.name)+'</span>';
+    h+='<span class="cat-badge '+cc+'">'+rower.cat+'</span>';
+    h+='<button data-rid="'+rower.id+'" onclick="renameRower(this.dataset.rid)" style="border:none;background:transparent;cursor:pointer;color:var(--spray);font-size:13px;padding:2px 6px" title="Renommer">&#9998;</button>';
+    h+='<button data-rid="'+rower.id+'" data-rname="'+xe(rower.name)+'" onclick="deleteRower(this.dataset.rid,this.dataset.rname)" style="border:none;background:transparent;cursor:pointer;color:var(--coral);font-size:15px;padding:2px 6px;line-height:1" title="Supprimer">&times;</button>';
+    h+='</div>';
+  });
+  var el=document.getElementById("rowersList");
+  if(el) el.innerHTML=h;
+}
+function addRowerFromPanel(){
+  var name=document.getElementById("newRowerName").value.trim();
+  var cat=document.getElementById("newRowerCat").value;
+  var gender=document.getElementById("newRowerGender").value;
+  if(!name){flash("Entrez un nom.","err");return;}
+  db.collection("rcnsm_rowers").add({name:name,cat:cat,gender:gender,ts:firebase.firestore.FieldValue.serverTimestamp()})
+    .then(function(){
+      document.getElementById("newRowerName").value="";
+      flash(name+" ajout&#233;(e) &#10003;","ok");
+    })
+    .catch(function(e){flash("Erreur: "+e.message,"err");});
+}
+function renameRower(id){
+  var rower=rowers.find(function(r){return r.id===id;});
+  if(!rower) return;
+  var nouveau=prompt("Nouveau nom pour «"+rower.name+"» :",rower.name);
+  if(!nouveau||nouveau.trim()===rower.name) return;
+  db.collection("rcnsm_rowers").doc(id).update({name:nouveau.trim()})
+    .then(function(){flash("Renomm&#233; &#10003;","ok");})
+    .catch(function(e){flash("Erreur: "+e.message,"err");});
+}
+function deleteRower(id,name){
+  if(!confirm("Supprimer "+name+" ? Toutes ses pr&#233;sences et inscriptions seront effac&#233;es.")) return;
+  var batch=db.batch();
+  // Delete rower
+  batch.delete(db.collection("rcnsm_rowers").doc(id));
+  // Delete presences & registrations (collected from memory)
+  if(pres[id]) Object.keys(pres[id]).forEach(function(cid){
+    pres[id][cid].forEach(function(day){
+      var docId=id+"_"+cid+"_"+day.replace(/ /g,"_");
+      batch.delete(db.collection("rcnsm_regata_presences").doc(docId));
+    });
+  });
+  if(regs[id]) Object.keys(regs[id]).forEach(function(cid){
+    regs[id][cid].forEach(function(code){
+      batch.delete(db.collection("rcnsm_regata_inscriptions").doc(id+"_"+cid+"_"+code));
+    });
+  });
+  batch.commit()
+    .then(function(){flash(name+" supprim&#233;(e)","ok");})
+    .catch(function(e){flash("Erreur: "+e.message,"err");});
+}
+
+/* ── Bateaux ── */
+function renderGBateaux(){
+  var sel="";
+  BTYPES.forEach(function(t){
+    var active=(activeGBtype===t);
+    var cnt=(BATEAUX[t]||[]).length;
+    sel+='<button onclick="switchGBtype(this.dataset.t)" data-t="'+t+'" style="padding:4px 10px;border-radius:16px;border:2px solid '+(active?'var(--oar)':'var(--border)')+';background:'+(active?'color-mix(in srgb,var(--oar) 20%,transparent)':'transparent')+';color:'+(active?'var(--oar)':'var(--muted)')+';font-size:11px;font-weight:700;cursor:pointer">';
+    sel+=t+' <span style="opacity:.7">('+cnt+')</span></button>';
+  });
+  document.getElementById("btypeSelector").innerHTML=sel;
+  var list=BATEAUX[activeGBtype]||[];
+  var h="";
+  if(!list.length) h='<div style="color:var(--muted);font-size:11px;padding:8px 0">Aucun bateau pour ce type.</div>';
+  list.forEach(function(b,i){
+    h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:5px">';
+    h+='<span style="flex:1;font-size:12px;font-weight:600">'+xe(b)+'</span>';
+    h+='<button onclick="renameBateau('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--spray);font-size:13px;padding:2px 6px" title="Renommer">&#9998;</button>';
+    h+='<button onclick="removeBateau('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--coral);font-size:15px;padding:2px 6px;line-height:1" title="Supprimer">&times;</button>';
+    h+='</div>';
+  });
+  document.getElementById("bateauxList").innerHTML=h;
+}
+function switchGBtype(t){activeGBtype=t;renderGBateaux();}
+function addBateauItem(){
+  var inp=document.getElementById("newBateauInput");
+  var val=inp.value.trim();
+  if(!val) return;
+  if(!BATEAUX[activeGBtype]) BATEAUX[activeGBtype]=[];
+  if(BATEAUX[activeGBtype].indexOf(val)!==-1){flash("Ce bateau existe d&#233;j&#224;.","err");return;}
+  BATEAUX[activeGBtype].push(val);
+  inp.value="";
+  renderGBateaux();
+}
+function removeBateau(i){
+  if(!confirm("Supprimer ce bateau ?")) return;
+  BATEAUX[activeGBtype].splice(i,1);
+  renderGBateaux();
+}
+function renameBateau(i){
+  var ancien=(BATEAUX[activeGBtype]||[])[i];
+  var nouveau=prompt("Nouveau nom :",ancien);
+  if(!nouveau||nouveau.trim()===ancien) return;
+  BATEAUX[activeGBtype][i]=nouveau.trim();
+  renderGBateaux();
+}
+
+/* ── Avirons ── */
+function renderGAvirons(){
+  var h="";
+  if(!AVIRONS.length) h='<div style="color:var(--muted);font-size:11px;padding:8px 0">Aucune paire d&#x27;avirons.</div>';
+  AVIRONS.forEach(function(a,i){
+    h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:5px">';
+    h+='<span style="flex:1;font-size:12px;font-weight:600">'+xe(a)+'</span>';
+    h+='<button onclick="renameAviron('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--spray);font-size:13px;padding:2px 6px" title="Renommer">&#9998;</button>';
+    h+='<button onclick="removeAviron('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--coral);font-size:15px;padding:2px 6px;line-height:1" title="Supprimer">&times;</button>';
+    h+="</div>";
+  });
+  document.getElementById("avironsList").innerHTML=h;
+}
+function addAvironItem(){
+  var inp=document.getElementById("newAvironInput");
+  var val=inp.value.trim();
+  if(!val) return;
+  if(AVIRONS.indexOf(val)!==-1){flash("Cette paire existe d&#233;j&#224;.","err");return;}
+  AVIRONS.push(val);
+  inp.value="";
+  renderGAvirons();
+}
+function removeAviron(i){
+  if(!confirm("Supprimer cette paire ?")) return;
+  AVIRONS.splice(i,1);
+  renderGAvirons();
+}
+function renameAviron(i){
+  var ancien=AVIRONS[i];
+  var nouveau=prompt("Nouveau nom :",ancien);
+  if(!nouveau||nouveau.trim()===ancien) return;
+  AVIRONS[i]=nouveau.trim();
+  renderGAvirons();
+}
 
 
 function renderSummaryBateaux(){
@@ -1250,7 +1534,7 @@ function importSelected(){
 /* ══ EXPORT PDF BATEAUX ══ */
 function exportPdfBateaux(){
   var lines=[];
-  lines.push("R.C.N.D. - Bateaux & Avirons 2026");
+  lines.push("R.C.N.S.M. - Bateaux & Avirons 2026");
   lines.push("Généré le "+new Date().toLocaleDateString("fr-BE"));
   lines.push("");
 
@@ -1282,7 +1566,7 @@ function exportPdfBateaux(){
   var html='<!DOCTYPE html><html><head><meta charset="UTF-8">';
   html+='<style>body{font-family:Arial,sans-serif;font-size:12px;color:#000;margin:20px}h1{font-size:16px;margin-bottom:4px}h2{font-size:13px;color:#1e4a75;margin:16px 0 6px;border-bottom:2px solid #1e4a75;padding-bottom:3px}table{width:100%;border-collapse:collapse;margin-bottom:12px}th{background:#07111f;color:#fff;padding:6px 8px;text-align:left;font-size:11px}td{padding:5px 8px;border-bottom:1px solid #ddd;font-size:11px}.rowers{color:#555;font-size:10px}.badge{display:inline-block;background:#eef;padding:1px 4px;border-radius:3px;font-size:9px;margin-left:3px}@media print{h2{page-break-before:auto}}</style>';
   html+='</head><body>';
-  html+='<h1>R.C.N.D. &ndash; Bateaux &amp; Avirons 2026</h1>';
+  html+='<h1>R.C.N.S.M. &ndash; Bateaux &amp; Avirons 2026</h1>';
   html+='<p style="color:#666;font-size:10px">Généré le '+new Date().toLocaleDateString("fr-BE")+'</p>';
 
   COMPS.forEach(function(comp){
