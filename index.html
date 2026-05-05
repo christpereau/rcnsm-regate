@@ -104,6 +104,8 @@ select option{background:var(--hull)}
 /* ── MODAL ── */
 .mbg{display:none;position:fixed;inset:0;background:rgba(4,10,18,.88);z-index:500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:18px 12px}
 .mbg.open{display:flex}
+.modal input[type=text],.modal select{background:#ffffff!important;color:#1a2a3a!important;border:1.5px solid #8aabcc!important}
+.modal input[type=text]::placeholder{color:#7a9ab8!important}
 .modal{background:var(--navy);border:1px solid var(--border);border-radius:var(--r);padding:20px;max-width:600px;width:100%;margin:auto}
 .mtitle{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:14px}
 .mrow{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--hull);border-radius:7px;margin-bottom:4px;font-size:12px;gap:8px}
@@ -172,6 +174,7 @@ select option{background:var(--hull)}
     <button class="main-tab" data-page="import">&#128196; Import PDF</button>
   </div>
   <button class="btn bgold" style="margin-left:6px" onclick="exportCSV()">&#8595; CSV</button>
+  <button class="btn boutline" style="margin-left:6px;font-size:11px;color:var(--coral);border-color:var(--coral)" onclick="purgeOrphanRegs()" title="Supprimer de Firebase les inscriptions sans présence">&#x1F9F9; Purger</button>
 </header>
 
 <div class="wrap">
@@ -230,15 +233,19 @@ select option{background:var(--hull)}
   <div id="bateauxTabs" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px"></div>
   <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
     <div id="bateauxContent" style="flex:1;min-width:300px"></div>
-    <div style="width:240px;flex-shrink:0;background:var(--navy);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:sticky;top:74px">
-      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold);margin-bottom:12px">&#9973; Utilisation</div>
+    <div style="width:260px;flex-shrink:0;background:var(--navy);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:sticky;top:74px;max-height:calc(100vh - 100px);overflow-y:auto">
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold);margin-bottom:12px">&#9973; Résumé</div>
       <div style="margin-bottom:12px">
-        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)">Bateaux</div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)">Bateaux utilisés</div>
         <div id="sumBateaux"><div style="color:var(--muted);font-size:11px">Aucune assignation</div></div>
       </div>
-      <div>
+      <div style="margin-bottom:12px">
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)">Paires d&apos;avirons</div>
         <div id="sumAvirons"><div style="color:var(--muted);font-size:11px">Aucune assignation</div></div>
+      </div>
+      <div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)">Compositions</div>
+        <div id="sumCompositions"><div style="color:var(--muted);font-size:11px">Aucune composition</div></div>
       </div>
     </div>
   </div>
@@ -291,16 +298,19 @@ select option{background:var(--hull)}
       <div style="background:var(--hull);border:1px solid var(--border);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:7px">
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">Nouveau rameur</div>
         <div style="display:flex;gap:6px">
-          <input id="newRowerName" type="text" placeholder="Pr&#233;nom Nom" style="flex:2;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 9px;outline:none">
-          <select id="newRowerCat" style="flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 7px;outline:none">
+          <input id="newRowerName" type="text" placeholder="Pr&#233;nom Nom" style="flex:2;background:#ffffff;border:1px solid var(--border);border-radius:7px;color:#1a2a3a;font-family:inherit;font-size:12px;padding:6px 9px;outline:none">
+          <input id="newRowerLicence" type="text" placeholder="N&#176; licence" style="flex:1;background:#ffffff;border:1px solid var(--border);border-radius:7px;color:#1a2a3a;font-family:inherit;font-size:12px;padding:6px 9px;outline:none">
+        </div>
+        <div style="display:flex;gap:6px">
+          <select id="newRowerCat" style="flex:1;background:#ffffff;border:1px solid var(--border);border-radius:7px;color:#1a2a3a;font-family:inherit;font-size:12px;padding:6px 7px;outline:none">
             <option>U13</option><option>U15</option><option>U17</option><option selected>U19</option>
             <option>U23</option><option>MM</option><option>MW</option>
           </select>
-          <select id="newRowerGender" style="flex:0 0 60px;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 7px;outline:none">
+          <select id="newRowerGender" style="flex:0 0 60px;background:#ffffff;border:1px solid var(--border);border-radius:7px;color:#1a2a3a;font-family:inherit;font-size:12px;padding:6px 7px;outline:none">
             <option value="M">&#9794; M</option><option value="W">&#9792; F</option>
           </select>
+          <button class="btn bgold" style="font-size:12px" onclick="addRowerFromPanel()">+ Ajouter</button>
         </div>
-        <button class="btn bgold" style="font-size:12px;align-self:flex-end" onclick="addRowerFromPanel()">+ Ajouter le rameur</button>
       </div>
     </div>
 
@@ -310,7 +320,7 @@ select option{background:var(--hull)}
       <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px" id="btypeSelector"></div>
       <div id="bateauxList" style="margin-bottom:12px"></div>
       <div style="display:flex;gap:6px">
-        <input id="newBateauInput" type="text" placeholder="Nom du nouveau bateau..." style="flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 9px;outline:none" onkeydown="if(event.key==='Enter')addBateauItem()">
+        <input id="newBateauInput" type="text" placeholder="Nom du nouveau bateau..." style="flex:1;background:#ffffff;border:1px solid var(--border);border-radius:7px;color:#1a2a3a;font-family:inherit;font-size:12px;padding:6px 9px;outline:none" onkeydown="if(event.key==='Enter')addBateauItem()">
         <button class="btn bgold" style="font-size:11px" onclick="addBateauItem()">+ Ajouter</button>
       </div>
     </div>
@@ -320,7 +330,7 @@ select option{background:var(--hull)}
       <div style="font-size:11px;color:var(--muted);margin-bottom:10px">G&#233;rez la liste des paires d&#x27;avirons. <strong>Sauvegarder</strong> pour appliquer.</div>
       <div id="avironsList" style="margin-bottom:12px"></div>
       <div style="display:flex;gap:6px">
-        <input id="newAvironInput" type="text" placeholder="Nom de la paire d'avirons..." style="flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;padding:6px 9px;outline:none" onkeydown="if(event.key==='Enter')addAvironItem()">
+        <input id="newAvironInput" type="text" placeholder="Nom de la paire d'avirons..." style="flex:1;background:#ffffff;border:1px solid var(--border);border-radius:7px;color:#1a2a3a;font-family:inherit;font-size:12px;padding:6px 9px;outline:none" onkeydown="if(event.key==='Enter')addAvironItem()">
         <button class="btn bgold" style="font-size:11px" onclick="addAvironItem()">+ Ajouter</button>
       </div>
     </div>
@@ -594,9 +604,12 @@ function elig(rower,course){
   // Beg/Déb: liste explicite de rameurs
   if(course.rowerIds!==undefined) return course.rowerIds.indexOf(rower.id)!==-1?"normal":false;
 
-  var g=G[rower.id]||"M", cat=rower.cat, dist=course.d||"";
+  var g=rower.gender||G[rower.id]||"M", cat=rower.cat, dist=course.d||"";
   var catM=course.catM||[], catW=course.catW||[];
-  var isOpen=catM.length>0&&catW.length>0; // catM ET catW = open/mixte
+  var isOpen=catM.length>0&&catW.length>0;
+
+  // ── Jamais éligible aux courses Masters si non-Master ──
+  if(course.master && cat!=="MM" && cat!=="MW") return false;
 
   // ── Masters (MM / MW) ──
   // MM = hommes Master, MW = femmes Master
@@ -685,7 +698,10 @@ db.collection("rcnsm_rowers").onSnapshot(function(snap){
 function loadAll(){
   loadAssignments();
   loadCatalog();
-  // Load registrations
+  var _regsLoaded=false, _presLoaded=false;
+  function _tryRender(){
+    if(_regsLoaded&&_presLoaded){loaded=true;ld(false);renderAll();}
+  }
   db.collection("rcnsm_regata_inscriptions").onSnapshot(function(snap){
     regs={};
     snap.docs.forEach(function(d){
@@ -694,9 +710,9 @@ function loadAll(){
       if(!regs[v.rowerId][v.compId])regs[v.rowerId][v.compId]=new Set();
       regs[v.rowerId][v.compId].add(v.courseCode);
     });
-    if(loaded) renderAll();
+    _regsLoaded=true;
+    if(loaded)renderAll(); else _tryRender();
   });
-  // Load presences
   db.collection("rcnsm_regata_presences").onSnapshot(function(snap){
     pres={};
     snap.docs.forEach(function(d){
@@ -705,9 +721,8 @@ function loadAll(){
       if(!pres[v.rowerId][v.compId])pres[v.rowerId][v.compId]=new Set();
       pres[v.rowerId][v.compId].add(v.day);
     });
-    loaded=true;
-    ld(false);
-    renderAll();
+    _presLoaded=true;
+    if(loaded)renderAll(); else _tryRender();
   });
 }
 
@@ -729,38 +744,61 @@ function togglePresence(rowerId,compId,day){
     // Remove presence
     daySet.delete(day);
     db.collection("rcnsm_regata_presences").doc(docId).delete();
-    // Remove registrations for courses of this day
+    // Remove registrations for ALL courses of this day
+    // (includes courses without explicit day = "Présent" mono-day)
+    var batch=db.batch();
     comp.courses.forEach(function(cr){
       var courseDay=cr.day||"Présent";
       if(courseDay!==day) return;
       if(regs[rowerId]&&regs[rowerId][compId]&&regs[rowerId][compId].has(cr.c)){
         regs[rowerId][compId].delete(cr.c);
-        db.collection("rcnsm_regata_inscriptions").doc(rowerId+"_"+compId+"_"+cr.c).delete();
+        batch.delete(db.collection("rcnsm_regata_inscriptions").doc(rowerId+"_"+compId+"_"+cr.c));
       }
     });
+    // Si plus aucune présence pour cette régate, supprimer TOUTES les inscriptions restantes
+    var stillPresent=daySet.size>0;
+    if(!stillPresent && regs[rowerId]&&regs[rowerId][compId]){
+      regs[rowerId][compId].forEach(function(code){
+        batch.delete(db.collection("rcnsm_regata_inscriptions").doc(rowerId+"_"+compId+"_"+code));
+      });
+      regs[rowerId][compId]=new Set();
+    }
+    batch.commit();
     flash("Absent – inscriptions retirées","ok");
   } else {
     // Add presence
     daySet.add(day);
     db.collection("rcnsm_regata_presences").doc(docId).set({rowerId:rowerId,compId:compId,day:day,ts:firebase.firestore.FieldValue.serverTimestamp()});
     // Auto-register all eligible courses for this day
-    var count=0;
+    // Also remove any existing non-eligible registrations for this day
+    var addBatch=db.batch();
+    var count=0, removed=0;
     comp.courses.forEach(function(cr){
       var courseDay=cr.day||"Présent";
       if(courseDay!==day) return;
-      if(!elig(rower,cr)) return;
       if(!regs[rowerId])regs[rowerId]={};
       if(!regs[rowerId][compId])regs[rowerId][compId]=new Set();
-      if(!regs[rowerId][compId].has(cr.c)){
-        regs[rowerId][compId].add(cr.c);
-        db.collection("rcnsm_regata_inscriptions").doc(rowerId+"_"+compId+"_"+cr.c).set({
-          rowerId:rowerId,compId:compId,courseCode:cr.c,
-          ts:firebase.firestore.FieldValue.serverTimestamp()
-        });
-        count++;
+      var eligible=!!elig(rower,cr);
+      if(eligible){
+        if(!regs[rowerId][compId].has(cr.c)){
+          regs[rowerId][compId].add(cr.c);
+          addBatch.set(db.collection("rcnsm_regata_inscriptions").doc(rowerId+"_"+compId+"_"+cr.c),{
+            rowerId:rowerId,compId:compId,courseCode:cr.c,
+            ts:firebase.firestore.FieldValue.serverTimestamp()
+          });
+          count++;
+        }
+      } else {
+        // Supprimer inscription non éligible si elle existe
+        if(regs[rowerId][compId].has(cr.c)){
+          regs[rowerId][compId].delete(cr.c);
+          addBatch.delete(db.collection("rcnsm_regata_inscriptions").doc(rowerId+"_"+compId+"_"+cr.c));
+          removed++;
+        }
       }
     });
-    flash("Présent – "+count+" course"+(count>1?"s":"")+" inscrite"+(count>1?"s":""),"ok");
+    addBatch.commit();
+    flash("Présent – "+count+" cours"+(count>1?"es":"e")+" inscrite"+(count>1?"s":"")+(removed>0?" ("+removed+" non-éligible"+(removed>1?"s":"")+" retirée"+(removed>1?"s":"")+")":""),"ok");
   }
   renderAll();
 }
@@ -963,6 +1001,44 @@ function openSummary(){
 function closeSummary(){document.getElementById("mbg").classList.remove("open");}
 
 /* ══ CSV ══ */
+/* ══ PURGE inscriptions orphelines ══ */
+function purgeOrphanRegs(){
+  if(!confirm("Nettoyer Firebase :\n- inscriptions sans présence\n- inscriptions non éligibles (ex: U19 dans masters)\n\nCette opération est irréversible.")) return;
+  var batch=db.batch();
+  var count=0;
+  rowers.forEach(function(rower){
+    if(!regs[rower.id]) return;
+    Object.keys(regs[rower.id]).forEach(function(compId){
+      var comp=COMPS.find(function(x){return x.id===compId;});
+      if(!comp) return;
+      var codes=Array.from(regs[rower.id][compId]);
+      codes.forEach(function(code){
+        var cr=comp.courses.find(function(x){return x.c===code;});
+        if(!cr){
+          // Course introuvable → supprimer
+          batch.delete(db.collection("rcnsm_regata_inscriptions").doc(rower.id+"_"+compId+"_"+code));
+          regs[rower.id][compId].delete(code);
+          count++; return;
+        }
+        var courseDay=cr.day||"Présent";
+        var present=pres[rower.id]&&pres[rower.id][compId]&&pres[rower.id][compId].has(courseDay);
+        var eligible=!!elig(rower,cr);
+        // Supprimer si absent OU non éligible
+        if(!present || !eligible){
+          batch.delete(db.collection("rcnsm_regata_inscriptions").doc(rower.id+"_"+compId+"_"+code));
+          regs[rower.id][compId].delete(code);
+          count++;
+        }
+      });
+    });
+  });
+  if(count===0){flash("Aucune inscription à purger.","ok");return;}
+  batch.commit().then(function(){
+    flash("Purgé : "+count+" inscription"+(count>1?"s":"")+" ✓","ok");
+    renderAll();
+  }).catch(function(e){flash("Erreur purge: "+e.message,"err");});
+}
+
 function exportCSV(){
   var lines=["Rameur;Genre;Cat;R&#233;gate;Date;Code;Heure;&#201;preuve;Distance;Mont&#233;e"];
   rowers.forEach(function(rower){
@@ -1073,20 +1149,30 @@ function loadAssignments(){
     assignments = {};
     snap.docs.forEach(function(d){
       var v=d.data();
+      if(!v.compId) return;
       if(!assignments[v.compId]) assignments[v.compId]={};
-      assignments[v.compId][v.courseCode]={bateau:v.bateau||"",aviron:v.aviron||""};
+      var slot=v.slot||0;
+      var key=(v.courseCode||"")+"__"+slot;
+      // Copier tous les champs (bateau, aviron, rowerId_0, rowerId_1, ...)
+      var entry={slot:slot,courseCode:v.courseCode||""};
+      Object.keys(v).forEach(function(k){
+        if(k!=="compId"&&k!=="ts") entry[k]=v[k];
+      });
+      assignments[v.compId][key]=entry;
     });
     // assignments loaded
   });
 }
 
-function saveAssignment(compId,code,field,value){
+function saveAssignment(compId,code,field,value,slot){
+  slot=slot||0;
   if(!assignments[compId]) assignments[compId]={};
-  if(!assignments[compId][code]) assignments[compId][code]={bateau:"",aviron:""};
-  assignments[compId][code][field]=value;
-  var doc=compId+"_"+code;
+  var key=code+"__"+slot;
+  if(!assignments[compId][key]) assignments[compId][key]={bateau:"",aviron:"",slot:slot,courseCode:code};
+  assignments[compId][key][field]=value;
+  var doc=compId+"_"+code+"_s"+slot;
   db.collection("rcnsm_regata_assignments").doc(doc).set(
-    Object.assign({compId:compId,courseCode:code},assignments[compId][code]),
+    Object.assign({compId:compId,courseCode:code,slot:slot},assignments[compId][key]),
     {merge:true}
   );
   renderSummaryBateaux();
@@ -1130,9 +1216,10 @@ function renderBateaux(){
   activeCourses.forEach(function(cr){
     var btype=detectBoatType(cr.l);
     var bList=BATEAUX[btype]||[];
-    var cur=assignments[comp.id]&&assignments[comp.id][cr.c]?assignments[comp.id][cr.c]:{bateau:"",aviron:""};
     var registeredRowers=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
     var nb=registeredRowers.length;
+    var boatSize=nbRowers(btype);
+    var nbSlots=Math.max(1,Math.ceil(nb/boatSize));
 
     h+='<div style="background:var(--navy);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden">';
 
@@ -1141,46 +1228,71 @@ function renderBateaux(){
     h+='<span style="font-weight:800;font-size:12px;color:'+comp.color+';min-width:50px">'+cr.c+'</span>';
     h+='<span style="color:var(--spray);font-size:11px;font-weight:700;min-width:55px">'+cr.t+'</span>';
     h+='<span style="flex:1;font-size:12px;font-weight:600">'+cr.l+' <span style="color:var(--muted);font-size:10px">· '+cr.d+'</span></span>';
+    h+='<span style="font-size:10px;color:var(--muted)">'+nb+' rameur'+(nb>1?"s":"")+' &rarr; '+nbSlots+' bateau'+(nbSlots>1?"x":"")+'</span>';
     h+='</div>';
 
-    // Body: rowers + boat + oars
-    h+='<div style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start">';
-
-    // Rowers list
-    h+='<div style="flex:1;min-width:160px">';
-    h+='<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:5px">Rameurs ('+nb+')</div>';
+    // Rameurs inscrits (liste compacte avec licence)
+    h+='<div style="padding:8px 12px 0">';
+    h+='<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:5px">Rameurs inscrits</div>';
+    h+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">';
     registeredRowers.forEach(function(r){
-      var g=G[r.id]||"M";
+      var g=r.gender||G[r.id]||"M";
       var cc="cu"+(r.cat||"").toLowerCase().replace("u","");
-      h+='<div style="display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(30,58,85,.2);font-size:12px">';
-      h+='<span style="font-size:9px;color:'+(g==="M"?"#7eceff":"#ffb3d1")+'">'+(g==="M"?"♂":"♀")+'</span>';
+      h+='<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--hull);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--text)">';
+      h+='<span style="font-size:10px;color:'+(g==="M"?"#3a9fd6":"#d64fa0")+'">'+(g==="M"?"♂":"♀")+'</span>';
       h+=xe(r.name);
       h+=' <span class="cat-badge '+cc+'">'+r.cat+'</span>';
+      if(r.licence) h+=' <span style="font-size:11px;color:var(--spray);font-family:monospace;font-weight:700">'+xe(r.licence)+'</span>';
       h+='</div>';
     });
     h+='</div>';
 
-    // Boat select
-    h+='<div style="min-width:155px">';
-    h+='<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:5px">Bateau ('+btype+')</div>';
-    h+='<select class="assign-select" data-cid="'+comp.id+'" data-code="'+cr.c+'" data-field="bateau" onchange="saveAssignment(this.dataset.cid,this.dataset.code,this.dataset.field,this.value)" style="width:100%">';
-    h+='<option value="">-- Choisir --</option>';
-    if(bList.length){
-      bList.forEach(function(b){h+='<option value="'+b+'"'+(cur.bateau===b?' selected':'')+'>'+b+'</option>';});
-    }else{
-      h+='<option disabled>Aucun bateau pour '+btype+'</option>';
+    // Slots: un par bateau nécessaire
+    for(var s=0;s<nbSlots;s++){
+      var slotKey=cr.c+"__"+s;
+      var sd=(assignments[comp.id]&&assignments[comp.id][slotKey])?assignments[comp.id][slotKey]:{bateau:"",aviron:"",rowerId:""};
+      h+='<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding:7px 8px;background:rgba(0,0,0,.04);border:1px solid var(--border);border-radius:7px;margin-bottom:7px">';
+
+      // Label slot
+      h+='<div style="font-size:10px;font-weight:700;color:var(--spray);width:100%;padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px">'+(nbSlots>1?"Bateau "+(s+1)+" / "+nbSlots:"Bateau")+'</div>';
+
+      // Sélection rameurs : boatSize selects (un par siège)
+      h+='<div style="flex:2;min-width:180px">';
+      h+='<div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Rameurs ('+boatSize+' siège'+(boatSize>1?"s":"")+')</div>';
+      h+='<div style="display:flex;flex-direction:column;gap:4px">';
+      for(var seat=0;seat<boatSize;seat++){
+        var seatField="rowerId_"+seat;
+        var seatVal=(sd[seatField]||"");
+        h+='<select class="assign-select" data-cid="'+comp.id+'" data-code="'+cr.c+'" data-field="'+seatField+'" data-slot="'+s+'" onchange="saveAssignment(this.dataset.cid,this.dataset.code,this.dataset.field,this.value,+this.dataset.slot)" style="width:100%;font-size:11px">';
+        h+='<option value="">Siège '+(seat+1)+(boatSize===1?"":" / "+boatSize)+' — Rameur...</option>';
+        registeredRowers.forEach(function(r){
+          h+='<option value="'+r.id+'"'+(seatVal===r.id?' selected':'')+'>'+xe(r.name)+(r.licence?' · '+xe(r.licence):'')+'</option>';
+        });
+        h+='</select>';
+      }
+      h+='</div></div>';
+
+      // Select bateau
+      h+='<div style="flex:1;min-width:140px">';
+      h+='<div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">'+btype+'</div>';
+      h+='<select class="assign-select" data-cid="'+comp.id+'" data-code="'+cr.c+'" data-field="bateau" data-slot="'+s+'" onchange="saveAssignment(this.dataset.cid,this.dataset.code,this.dataset.field,this.value,+this.dataset.slot)" style="width:100%">';
+      h+='<option value="">-- Bateau --</option>';
+      if(bList.length){bList.forEach(function(b){h+='<option value="'+b+'"'+(sd.bateau===b?' selected':'')+'>'+b+'</option>';});}
+      else{h+='<option disabled>Aucun '+btype+' enregistré</option>';}
+      h+='</select></div>';
+
+      // Select avirons
+      h+='<div style="flex:1;min-width:140px">';
+      h+='<div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Avirons</div>';
+      h+='<select class="assign-select" data-cid="'+comp.id+'" data-code="'+cr.c+'" data-field="aviron" data-slot="'+s+'" onchange="saveAssignment(this.dataset.cid,this.dataset.code,this.dataset.field,this.value,+this.dataset.slot)" style="width:100%">';
+      h+='<option value="">-- Avirons --</option>';
+      AVIRONS.forEach(function(a){h+='<option value="'+a+'"'+(sd.aviron===a?' selected':'')+'>'+a+'</option>';});
+      h+='</select></div>';
+
+      h+='</div>'; // end slot row
     }
-    h+='</select></div>';
 
-    // Oar select
-    h+='<div style="min-width:155px">';
-    h+='<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:5px">Avirons</div>';
-    h+='<select class="assign-select" data-cid="'+comp.id+'" data-code="'+cr.c+'" data-field="aviron" onchange="saveAssignment(this.dataset.cid,this.dataset.code,this.dataset.field,this.value)" style="width:100%">';
-    h+='<option value="">-- Choisir --</option>';
-    AVIRONS.forEach(function(a){h+='<option value="'+a+'"'+(cur.aviron===a?' selected':'')+'>'+a+'</option>';});
-    h+='</select></div>';
-
-    h+='</div></div>'; // end body + card
+    h+='</div></div>'; // end padding + card
   });
 
   contentEl.innerHTML=h;
@@ -1232,12 +1344,13 @@ function renderGRameurs(){
   rowers.forEach(function(rower){
     var g=rower.gender||"M";
     var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
-    h+='<div style="display:flex;align-items:center;gap:7px;padding:5px 8px;background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:5px">';
+    h+='<div style="display:flex;align-items:center;gap:7px;padding:5px 8px;background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;flex-wrap:wrap">';
     h+='<span style="font-size:10px;color:'+(g==="M"?"#7eceff":"#ffb3d1")+'">'+(g==="M"?"&#9794;":"&#9792;")+'</span>';
-    h+='<span style="flex:1;font-size:12px;font-weight:600">'+xe(rower.name)+'</span>';
+    h+='<span style="flex:1;min-width:100px;font-size:12px;font-weight:600">'+xe(rower.name)+'</span>';
     h+='<span class="cat-badge '+cc+'">'+rower.cat+'</span>';
-    h+='<button data-rid="'+rower.id+'" onclick="renameRower(this.dataset.rid)" style="border:none;background:transparent;cursor:pointer;color:var(--spray);font-size:13px;padding:2px 6px" title="Renommer">&#9998;</button>';
-    h+='<button data-rid="'+rower.id+'" data-rname="'+xe(rower.name)+'" onclick="deleteRower(this.dataset.rid,this.dataset.rname)" style="border:none;background:transparent;cursor:pointer;color:var(--coral);font-size:15px;padding:2px 6px;line-height:1" title="Supprimer">&times;</button>';
+    h+='<span style="font-size:10px;color:var(--muted);font-family:monospace;min-width:55px;text-align:right">'+(rower.licence?xe(rower.licence):'<em style="opacity:.5">—</em>')+'</span>';
+    h+='<button data-rid="'+rower.id+'" onclick="editRower(this.dataset.rid)" style="border:none;background:transparent;cursor:pointer;color:var(--spray);font-size:13px;padding:2px 5px" title="Modifier">&#9998;</button>';
+    h+='<button data-rid="'+rower.id+'" data-rname="'+xe(rower.name)+'" onclick="deleteRower(this.dataset.rid,this.dataset.rname)" style="border:none;background:transparent;cursor:pointer;color:var(--coral);font-size:15px;padding:2px 5px;line-height:1" title="Supprimer">&times;</button>';
     h+='</div>';
   });
   var el=document.getElementById("rowersList");
@@ -1245,12 +1358,16 @@ function renderGRameurs(){
 }
 function addRowerFromPanel(){
   var name=document.getElementById("newRowerName").value.trim();
+  var licence=document.getElementById("newRowerLicence").value.trim();
   var cat=document.getElementById("newRowerCat").value;
   var gender=document.getElementById("newRowerGender").value;
   if(!name){flash("Entrez un nom.","err");return;}
-  db.collection("rcnsm_rowers").add({name:name,cat:cat,gender:gender,ts:firebase.firestore.FieldValue.serverTimestamp()})
+  var data={name:name,cat:cat,gender:gender,ts:firebase.firestore.FieldValue.serverTimestamp()};
+  if(licence) data.licence=licence;
+  db.collection("rcnsm_rowers").add(data)
     .then(function(){
       document.getElementById("newRowerName").value="";
+      document.getElementById("newRowerLicence").value="";
       flash(name+" ajout&#233;(e) &#10003;","ok");
     })
     .catch(function(e){flash("Erreur: "+e.message,"err");});
@@ -1369,47 +1486,131 @@ function renameAviron(i){
 
 
 function renderSummaryBateaux(){
-  // Count bateaux usage
   var bCounts={}, aCounts={};
+  // Parcourir tous les slots
   Object.keys(assignments).forEach(function(cid){
-    Object.keys(assignments[cid]).forEach(function(code){
-      var a=assignments[cid][code];
-      if(a.bateau){bCounts[a.bateau]=(bCounts[a.bateau]||0)+1;}
+    Object.keys(assignments[cid]).forEach(function(key){
+      var a=assignments[cid][key];
+      var code=a.courseCode||key.split("__")[0];
+      if(a.bateau) bCounts[a.bateau]=(bCounts[a.bateau]||0)+1;
       if(a.aviron){
-        // Count pairs = nbRowers / 2 (for sweep) or nbRowers (for scull)
         var comp=COMPS.find(function(x){return x.id===cid;});
         var cr=comp?comp.courses.find(function(x){return x.c===code;}):null;
         var btype=cr?detectBoatType(cr.l):"1x";
-        // Scull (1x,2x,4x): 2 avirons/rameur = nb paires = nb rameurs
-        // Sweep (2-,4-,4+,8+): 1 aviron/rameur = nb paires = nb rameurs / 2... 
-        // Mais on compte en paires: 2- = 1 paire/rameur non, 2 avirons total = 1 paire
-        // Convention: on compte le nb d'avirons
-        // 1x=2, 2x=4, 4x=8 (scull: 2 par rameur)
-        // 2-=2, 4-=4, 8+=8 (sweep: 1 par rameur)
         var oarsCount={"1x":2,"2x":4,"4x":8,"2-":2,"4-":4,"4+":4,"8+":8}[btype]||2;
-        var pairs=oarsCount/2; // on affiche en paires
-        aCounts[a.aviron]=(aCounts[a.aviron]||0)+pairs;
+        aCounts[a.aviron]=(aCounts[a.aviron]||0)+(oarsCount/2);
       }
     });
   });
 
+  // Bateaux — avec liste des courses où ils sont utilisés
   var bh="";
-  var bKeys=Object.keys(bCounts).sort();
+  // Reconstruire une map bateau→[courses]
+  var bUsage={};
+  Object.keys(assignments).forEach(function(cid){
+    var comp=COMPS.find(function(x){return x.id===cid;});
+    Object.keys(assignments[cid]).forEach(function(key){
+      var a=assignments[cid][key];
+      if(!a.bateau) return;
+      var code=a.courseCode||key.split("__")[0];
+      var cr=comp?comp.courses.find(function(x){return x.c===code;}):null;
+      var label=cr?(cr.c+" "+cr.l):code;
+      if(!bUsage[a.bateau]) bUsage[a.bateau]=[];
+      bUsage[a.bateau].push(label);
+    });
+  });
+  var bKeys=Object.keys(bUsage).sort();
   if(bKeys.length){
     bKeys.forEach(function(b){
-      bh+='<div class="sum-side-row"><span>'+b+'</span><span class="sum-badge">'+bCounts[b]+'x</span></div>';
+      bh+='<div style="padding:5px 0;border-bottom:1px solid var(--border)">';
+      bh+='<div style="display:flex;justify-content:space-between;align-items:center">';
+      bh+='<span style="font-size:12px;font-weight:700;color:var(--text)">'+xe(b)+'</span>';
+      bh+='<span class="sum-badge">'+bUsage[b].length+'x</span>';
+      bh+='</div>';
+      bh+='<div style="font-size:10px;color:var(--spray);margin-top:2px">'+bUsage[b].join('  ·  ')+'</div>';
+      bh+='</div>';
     });
-  }else{bh='<div style="color:var(--muted);font-size:11px">Aucun bateau assigné</div>';}
+  } else bh='<div style="color:var(--muted);font-size:11px">Aucun bateau assigné</div>';
   document.getElementById("sumBateaux").innerHTML=bh;
 
+  // Avirons — avec courses
   var ah="";
-  var aKeys=Object.keys(aCounts).sort();
+  var aUsage={};
+  Object.keys(assignments).forEach(function(cid){
+    var comp=COMPS.find(function(x){return x.id===cid;});
+    Object.keys(assignments[cid]).forEach(function(key){
+      var a=assignments[cid][key];
+      if(!a.aviron) return;
+      var code=a.courseCode||key.split("__")[0];
+      var cr=comp?comp.courses.find(function(x){return x.c===code;}):null;
+      var label=cr?(cr.c+" "+cr.l):code;
+      if(!aUsage[a.aviron]) aUsage[a.aviron]=[];
+      aUsage[a.aviron].push(label);
+    });
+  });
+  var aKeys=Object.keys(aUsage).sort();
   if(aKeys.length){
     aKeys.forEach(function(a){
-      ah+='<div class="sum-side-row"><span>'+a+'</span><span class="sum-badge">'+aCounts[a]+' paires</span></div>';
+      ah+='<div style="padding:5px 0;border-bottom:1px solid var(--border)">';
+      ah+='<div style="display:flex;justify-content:space-between;align-items:center">';
+      ah+='<span style="font-size:12px;font-weight:700;color:var(--text)">'+xe(a)+'</span>';
+      ah+='<span class="sum-badge">'+aUsage[a].length+' course'+(aUsage[a].length>1?"s":"")+'</span>';
+      ah+='</div>';
+      ah+='<div style="font-size:10px;color:var(--spray);margin-top:2px">'+aUsage[a].join('  ·  ')+'</div>';
+      ah+='</div>';
     });
-  }else{ah='<div style="color:var(--muted);font-size:11px">Aucun aviron assigné</div>';}
+  } else ah='<div style="color:var(--muted);font-size:11px">Aucun aviron assigné</div>';
   document.getElementById("sumAvirons").innerHTML=ah;
+
+  // Compositions par cours (avec licences)
+  var ch="";
+  COMPS.forEach(function(comp){
+    var activeCourses=comp.courses.filter(function(cr){
+      return rowers.some(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
+    });
+    if(!activeCourses.length) return;
+    ch+='<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:10px 0 5px">'+comp.name+'</div>';
+    activeCourses.forEach(function(cr){
+      var slots=getSlots(comp.id,cr.c);
+      var allReg=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
+      ch+='<div style="background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:7px;overflow:hidden">';
+      // Header course
+      ch+='<div style="display:flex;gap:8px;align-items:center;padding:5px 9px;border-bottom:1px solid var(--border)">';
+      ch+='<span style="font-weight:800;font-size:11px;color:'+comp.color+'">'+cr.c+'</span>';
+      ch+='<span style="color:var(--spray);font-size:10px;font-weight:700">'+cr.t+'</span>';
+      ch+='<span style="flex:1;font-size:11px;font-weight:600">'+cr.l+'</span>';
+      ch+='</div>';
+      // Slots
+      slots.forEach(function(sl,si){
+        ch+='<div style="padding:5px 9px;'+(si<slots.length-1?'border-bottom:1px solid var(--border)':'')+'">';
+        if(slots.length>1) ch+='<div style="font-size:9px;font-weight:700;color:var(--spray);margin-bottom:3px">Bateau '+(si+1)+'</div>';
+        // Bateau + aviron
+        ch+='<div style="display:flex;gap:10px;font-size:10px;margin-bottom:4px">';
+        ch+='<span>&#9973; '+(sl.bateau||'<em style="opacity:.4">—</em>')+'</span>';
+        ch+='<span>&#129528; '+(sl.aviron||'<em style="opacity:.4">—</em>')+'</span>';
+        ch+='</div>';
+        // Rameurs
+        ch+='<div style="display:flex;flex-wrap:wrap;gap:3px">';
+        var hasAssigned=sl.rowers.some(function(r){return r!==null;});
+        var displayRowers=hasAssigned?sl.rowers.filter(function(r){return r!==null;}):allReg;
+        displayRowers.forEach(function(r){
+          if(!r) return;
+          var g=r.gender||G[r.id]||"M";
+          ch+='<span style="display:inline-flex;align-items:center;gap:3px;padding:1px 6px;background:var(--navy);border:1px solid var(--border);border-radius:12px;font-size:10px">';
+          ch+='<span style="font-size:8px;color:'+(g==="M"?"#7eceff":"#ffb3d1")+'">'+(g==="M"?"♂":"♀")+'</span>';
+          ch+=xe(r.name);
+          if(r.licence) ch+=' <span style="font-family:monospace;font-size:9px;color:var(--muted)">'+xe(r.licence)+'</span>';
+          ch+='</span>';
+        });
+        ch+='</div>';
+        ch+='</div>'; // slot
+      });
+      ch+='</div>'; // course card
+    });
+  });
+
+  var sumComp=document.getElementById("sumCompositions");
+  if(sumComp) sumComp.innerHTML=ch||'<div style="color:var(--muted);font-size:11px">Aucune composition assignée</div>';
 }
 
 /* ══════════════════════════════════════════
@@ -1532,76 +1733,216 @@ function importSelected(){
 }
 
 /* ══ EXPORT PDF BATEAUX ══ */
+/* Helper: retourne tous les slots assignés pour une course */
+function getSlots(compId, courseCode){
+  if(!assignments[compId]) return [];
+  var slots=[];
+  var btype=null;
+  var comp=COMPS.find(function(x){return x.id===compId;});
+  var cr=comp?comp.courses.find(function(x){return x.c===courseCode;}):null;
+  if(cr) btype=detectBoatType(cr.l);
+  var bs=btype?nbRowers(btype):1;
+  var regRowers=rowers.filter(function(r){return regs[r.id]&&regs[r.id][compId]&&regs[r.id][compId].has(courseCode);});
+  var nbS=Math.max(1,Math.ceil(regRowers.length/bs));
+  for(var s=0;s<nbS;s++){
+    var key=courseCode+"__"+s;
+    var sd=assignments[compId][key]||{bateau:"",aviron:""};
+    // Récupérer les rameurs assignés à ce slot
+    var assignedRowers=[];
+    for(var seat=0;seat<bs;seat++){
+      var rid=sd["rowerId_"+seat]||"";
+      var r=rid?rowers.find(function(x){return x.id===rid;}):null;
+      assignedRowers.push(r||null);
+    }
+    slots.push({slot:s,bateau:sd.bateau||"",aviron:sd.aviron||"",rowers:assignedRowers,bs:bs});
+  }
+  return slots;
+}
+
 function exportPdfBateaux(){
-  var lines=[];
-  lines.push("R.C.N.S.M. - Bateaux & Avirons 2026");
-  lines.push("Généré le "+new Date().toLocaleDateString("fr-BE"));
-  lines.push("");
-
-  COMPS.forEach(function(comp){
-    var activeCourses=comp.courses.filter(function(cr){
-      return rowers.some(function(r){
-        return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);
-      });
-    });
-    if(!activeCourses.length) return;
-
-    lines.push("══════════════════════════════════════════");
-    lines.push(comp.name.toUpperCase()+" - "+fd(comp.date));
-    lines.push("══════════════════════════════════════════");
-    lines.push("");
-
-    activeCourses.forEach(function(cr){
-      var cur=assignments[comp.id]&&assignments[comp.id][cr.c]?assignments[comp.id][cr.c]:{bateau:"",aviron:""};
-      var registeredRowers=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
-      lines.push("  Course "+cr.c+" - "+cr.t+" - "+cr.l+" ("+cr.d+")");
-      lines.push("  Bateau  : "+(cur.bateau||"Non assigné"));
-      lines.push("  Avirons : "+(cur.aviron||"Non assignés"));
-      lines.push("  Rameurs : "+registeredRowers.map(function(r){return r.name+" ("+r.cat+")";}).join(", "));
-      lines.push("");
-    });
-  });
-
-  // Build PDF as HTML then print
   var html='<!DOCTYPE html><html><head><meta charset="UTF-8">';
-  html+='<style>body{font-family:Arial,sans-serif;font-size:12px;color:#000;margin:20px}h1{font-size:16px;margin-bottom:4px}h2{font-size:13px;color:#1e4a75;margin:16px 0 6px;border-bottom:2px solid #1e4a75;padding-bottom:3px}table{width:100%;border-collapse:collapse;margin-bottom:12px}th{background:#07111f;color:#fff;padding:6px 8px;text-align:left;font-size:11px}td{padding:5px 8px;border-bottom:1px solid #ddd;font-size:11px}.rowers{color:#555;font-size:10px}.badge{display:inline-block;background:#eef;padding:1px 4px;border-radius:3px;font-size:9px;margin-left:3px}@media print{h2{page-break-before:auto}}</style>';
-  html+='</head><body>';
+  html+='<style>';
+  html+='body{font-family:Arial,sans-serif;font-size:12px;color:#000;margin:24px}';
+  html+='h1{font-size:17px;margin-bottom:2px;color:#07111f}';
+  html+='h2{font-size:13px;color:#1e4a75;margin:18px 0 6px;border-bottom:2px solid #1e4a75;padding-bottom:3px}';
+  html+='.course-block{margin-bottom:14px;border:1px solid #d0d8e8;border-radius:6px;overflow:hidden}';
+  html+='.course-head{background:#07111f;color:#fff;padding:6px 10px;display:flex;gap:12px;align-items:baseline}';
+  html+='.c-num{font-weight:900;font-size:13px;min-width:45px}';
+  html+='.c-time{color:#7eceff;font-weight:700;min-width:55px}';
+  html+='.c-label{flex:1;font-size:12px}';
+  html+='.c-dist{color:#aaa;font-size:10px}';
+  html+='.slot-row{padding:6px 10px;border-bottom:1px solid #eef;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}';
+  html+='.slot-row:last-child{border-bottom:none}';
+  html+='.slot-label{font-size:10px;font-weight:700;color:#1e4a75;min-width:65px;padding-top:2px}';
+  html+='.slot-boat{font-weight:700;color:#07111f;min-width:130px}';
+  html+='.slot-oar{color:#555;min-width:120px}';
+  html+='.slot-rowers{flex:1;color:#333}';
+  html+='.rower-item{display:inline-flex;align-items:center;gap:3px;margin:1px 4px 1px 0;padding:1px 6px;background:#eef3fa;border-radius:10px;font-size:10px}';
+  html+='.lic{color:#888;font-family:monospace;font-size:9px}';
+  html+='.badge{background:#1e4a75;color:#fff;border-radius:3px;padding:0 3px;font-size:8px;margin-left:2px}';
+  html+='@media print{.course-block{page-break-inside:avoid}}';
+  html+='</style></head><body>';
   html+='<h1>R.C.N.S.M. &ndash; Bateaux &amp; Avirons 2026</h1>';
-  html+='<p style="color:#666;font-size:10px">Généré le '+new Date().toLocaleDateString("fr-BE")+'</p>';
+  html+='<p style="color:#666;font-size:10px;margin-top:2px">G&eacute;n&eacute;r&eacute; le '+new Date().toLocaleDateString("fr-BE")+'</p>';
 
   COMPS.forEach(function(comp){
     var activeCourses=comp.courses.filter(function(cr){
-      return rowers.some(function(r){
-        return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);
-      });
+      return rowers.some(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
     });
     if(!activeCourses.length) return;
 
     html+='<h2>'+comp.name+' &ndash; '+fd(comp.date)+'</h2>';
-    html+='<table><thead><tr><th>N&deg;</th><th>Heure</th><th>&Eacute;preuve</th><th>Bateau</th><th>Avirons</th><th>Rameurs</th></tr></thead><tbody>';
 
     activeCourses.forEach(function(cr){
-      var cur=assignments[comp.id]&&assignments[comp.id][cr.c]?assignments[comp.id][cr.c]:{bateau:"",aviron:""};
-      var rowNames=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);})
-        .map(function(r){return r.name+' <span class="badge">'+r.cat+'</span>';}).join(", ");
-      html+='<tr>';
-      html+='<td style="font-weight:bold;color:#1e4a75">'+cr.c+'</td>';
-      html+='<td style="color:#2e6ca4;font-weight:bold">'+cr.t+'</td>';
-      html+='<td>'+cr.l+' <span style="color:#999;font-size:10px">'+cr.d+'</span></td>';
-      html+='<td style="font-weight:bold">'+( cur.bateau||'<span style="color:#999">-</span>')+'</td>';
-      html+='<td>'+( cur.aviron||'<span style="color:#999">-</span>')+'</td>';
-      html+='<td class="rowers">'+( rowNames||'<span style="color:#999">-</span>')+'</td>';
-      html+='</tr>';
+      var slots=getSlots(comp.id,cr.c);
+      var allReg=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
+
+      html+='<div class="course-block">';
+      html+='<div class="course-head">';
+      html+='<span class="c-num">'+cr.c+'</span>';
+      html+='<span class="c-time">'+cr.t+'</span>';
+      html+='<span class="c-label">'+cr.l+'</span>';
+      html+='<span class="c-dist">'+cr.d+' &bull; '+allReg.length+' rameur'+(allReg.length>1?"s":"")+'</span>';
+      html+='</div>';
+
+      slots.forEach(function(sl,si){
+        html+='<div class="slot-row">';
+        // Label
+        var slotLbl=slots.length>1?"Bateau "+(si+1)+" / "+slots.length:"Bateau";
+        html+='<div class="slot-label">'+slotLbl+'</div>';
+        // Bateau
+        html+='<div class="slot-boat">'+(sl.bateau||'<span style="color:#bbb">—</span>')+'</div>';
+        // Avirons
+        html+='<div class="slot-oar">'+(sl.aviron||'<span style="color:#bbb">—</span>')+'</div>';
+        // Rameurs assignés
+        html+='<div class="slot-rowers">';
+        var hasAssigned=false;
+        sl.rowers.forEach(function(r,seat){
+          if(r){
+            hasAssigned=true;
+            var g=r.gender||"M";
+            html+='<span class="rower-item">';
+            html+=(g==="M"?"&#9794;":"&#9792;")+" ";
+            html+=r.name;
+            if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
+            html+='<span class="badge">'+r.cat+'</span>';
+            html+='</span>';
+          }
+        });
+        if(!hasAssigned){
+          // Afficher tous les inscrits si aucun assigné (slot non rempli)
+          allReg.forEach(function(r){
+            var g=r.gender||"M";
+            html+='<span class="rower-item" style="opacity:.5">';
+            html+=(g==="M"?"&#9794;":"&#9792;")+" "+r.name;
+            if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
+            html+='<span class="badge">'+r.cat+'</span>';
+            html+='</span>';
+          });
+        }
+        html+='</div>';
+        html+='</div>'; // slot-row
+      });
+
+      html+='</div>'; // course-block
+    });
+  });
+
+  // ── Section 2 : Récapitulatif bateaux & avirons ──
+  html+='<div style="page-break-before:always"></div>';
+  html+='<h2 style="margin-top:0">&#9873; R&eacute;capitulatif bateaux &amp; avirons</h2>';
+
+  var bMap={}, aMap={};
+  COMPS.forEach(function(comp){
+    if(!assignments[comp.id]) return;
+    Object.keys(assignments[comp.id]).forEach(function(key){
+      var a=assignments[comp.id][key];
+      var code=a.courseCode||key.split("__")[0];
+      var cr=comp.courses.find(function(x){return x.c===code;});
+      var label=cr?(cr.c+' '+cr.l+' ('+comp.name+')'): (comp.name+' '+code);
+      if(a.bateau){if(!bMap[a.bateau])bMap[a.bateau]=[];bMap[a.bateau].push(label);}
+      if(a.aviron){if(!aMap[a.aviron])aMap[a.aviron]=[];aMap[a.aviron].push(label);}
+    });
+  });
+
+  html+='<div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:20px">';
+
+  // Bateaux
+  html+='<div style="flex:1;min-width:260px">';
+  html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin-bottom:8px">Bateaux</div>';
+  var bKeys=Object.keys(bMap).sort();
+  if(bKeys.length){
+    html+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
+    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Bateau</th>';
+    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Courses</th></tr></thead><tbody>';
+    bKeys.forEach(function(b){
+      html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-weight:700;font-size:12px">'+b+'</td>';
+      html+='<td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-size:11px;color:#444">'+bMap[b].join('<br>')+'</td></tr>';
     });
     html+='</tbody></table>';
+  } else html+='<p style="color:#999;font-size:11px">Aucun bateau assign&eacute;</p>';
+  html+='</div>';
+
+  // Avirons
+  html+='<div style="flex:1;min-width:260px">';
+  html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin-bottom:8px">Paires d\'avirons</div>';
+  var aKeys=Object.keys(aMap).sort();
+  if(aKeys.length){
+    html+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
+    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Avirons</th>';
+    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Courses</th></tr></thead><tbody>';
+    aKeys.forEach(function(a){
+      html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-weight:700;font-size:12px">'+a+'</td>';
+      html+='<td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-size:11px;color:#444">'+aMap[a].join('<br>')+'</td></tr>';
+    });
+    html+='</tbody></table>';
+  } else html+='<p style="color:#999;font-size:11px">Aucun aviron assign&eacute;</p>';
+  html+='</div>';
+  html+='</div>'; // flex
+
+  // ── Section 3 : Résumé par rameur ──
+  html+='<div style="page-break-before:always"></div>';
+  html+='<h2 style="margin-top:0">&#128388; R&eacute;sum&eacute; par rameur</h2>';
+  COMPS.forEach(function(comp){
+    var rows=[];
+    rowers.forEach(function(rower){
+      if(regs[rower.id]&&regs[rower.id][comp.id]&&regs[rower.id][comp.id].size>0)
+        rows.push({r:rower,codes:Array.from(regs[rower.id][comp.id]).sort()});
+    });
+    if(!rows.length) return;
+    html+='<div style="margin-bottom:16px">';
+    html+='<div style="font-size:12px;font-weight:700;color:#1e4a75;background:#e8edf5;padding:5px 8px;border-radius:4px;margin-bottom:6px">'+comp.name+' &ndash; '+fd(comp.date)+'</div>';
+    html+='<table style="width:100%;border-collapse:collapse">';
+    html+='<thead><tr>';
+    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Rameur</th>';
+    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Cat.</th>';
+    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Licence</th>';
+    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Courses inscrites</th>';
+    html+='</tr></thead><tbody>';
+    rows.forEach(function(row,i){
+      var g=row.r.gender||G[row.r.id]||"M";
+      var bg=i%2===0?'#fff':'#f5f8fc';
+      var courses=row.codes.map(function(code){
+        var cr=comp.courses.find(function(x){return x.c===code;});
+        return cr?('<b>'+code+'</b> '+cr.l+' <span style="color:#999">'+cr.t+'</span>'):code;
+      }).join('&nbsp;·&nbsp;');
+      html+='<tr style="background:'+bg+'">';
+      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-weight:700;font-size:12px">';
+      html+=(g==="M"?'<span style="color:#3a9fd6">&#9794;</span>':'<span style="color:#d64fa0">&#9792;</span>')+' '+row.r.name;
+      html+='</td>';
+      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-size:11px">'+( row.r.cat||'—')+'</td>';
+      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-size:11px;font-family:monospace;color:#1e4a75">'+( row.r.licence||'—')+'</td>';
+      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-size:11px">'+courses+'</td>';
+      html+='</tr>';
+    });
+    html+='</tbody></table></div>';
   });
 
   html+='</body></html>';
-
-  var w=window.open("","_blank","width=900,height=700");
+  var w=window.open("","_blank","width=960,height=750");
   w.document.write(html);
   w.document.close();
-  setTimeout(function(){w.print();},500);
+  setTimeout(function(){w.print();},600);
 }
 
 // Attach tab click handlers via JS (avoid onclick HTML attribute issues)
