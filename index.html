@@ -837,7 +837,7 @@ function renderPresences(){
   }
   var h="";
   rowers.forEach(function(rower){
-    var g=G[rower.id]||"M";
+    var g=rower.gender||G[rower.id]||"M";
     var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
     var col=avcol(rower.id);
     var initials=(rower.name||"?").split(" ").map(function(w){return w[0];}).join("").substring(0,2).toUpperCase();
@@ -915,7 +915,7 @@ function renderTable(){
   hh+='<th style="text-align:center;padding:5px 3px;font-size:9px;color:'+color+'">Heure</th>';
   hh+='<th style="text-align:left;padding:5px 8px;font-size:9px;color:'+color+';border-right:2px solid var(--border)">&#201;preuve</th>';
   cols.forEach(function(rower){
-    var g=G[rower.id]||"M";
+    var g=rower.gender||G[rower.id]||"M";
     var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
     hh+='<th style="padding:5px 3px;vertical-align:bottom;text-align:center">';
     hh+='<div style="display:flex;flex-direction:column;align-items:center;gap:2px">';
@@ -983,7 +983,7 @@ function openSummary(){
     if(!rows.length)return;
     h+='<div class="csect"><div class="csect-head" style="color:'+comp.color+'">'+fd(comp.date)+' &#8211; '+comp.name+'</div>';
     rows.forEach(function(row){
-      var g=G[row.r.id]||"M";
+      var g=row.r.gender||G[row.r.id]||"M";
       var cc="cu"+(row.r.cat||"").toLowerCase().replace("u","");
       var details=row.codes.map(function(code){
         var cr=comp.courses.find(function(x){return x.c===code;});
@@ -1043,7 +1043,7 @@ function exportCSV(){
   var lines=["Rameur;Genre;Cat;R&#233;gate;Date;Code;Heure;&#201;preuve;Distance;Mont&#233;e"];
   rowers.forEach(function(rower){
     if(!regs[rower.id])return;
-    var g=G[rower.id]||"M";
+    var g=rower.gender||G[rower.id]||"M";
     COMPS.forEach(function(comp){
       if(!regs[rower.id][comp.id])return;
       Array.from(regs[rower.id][comp.id]).sort().forEach(function(code){
@@ -1764,26 +1764,32 @@ function exportPdfBateaux(){
   html+='<style>';
   html+='body{font-family:Arial,sans-serif;font-size:12px;color:#000;margin:24px}';
   html+='h1{font-size:17px;margin-bottom:2px;color:#07111f}';
-  html+='h2{font-size:13px;color:#1e4a75;margin:18px 0 6px;border-bottom:2px solid #1e4a75;padding-bottom:3px}';
-  html+='.course-block{margin-bottom:14px;border:1px solid #d0d8e8;border-radius:6px;overflow:hidden}';
-  html+='.course-head{background:#07111f;color:#fff;padding:6px 10px;display:flex;gap:12px;align-items:baseline}';
-  html+='.c-num{font-weight:900;font-size:13px;min-width:45px}';
-  html+='.c-time{color:#7eceff;font-weight:700;min-width:55px}';
-  html+='.c-label{flex:1;font-size:12px}';
-  html+='.c-dist{color:#aaa;font-size:10px}';
-  html+='.slot-row{padding:6px 10px;border-bottom:1px solid #eef;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}';
+  html+='.reg-block{margin-bottom:30px}';
+  html+='.reg-header{background:#07111f;color:#fff;padding:10px 14px;border-radius:6px 6px 0 0;display:flex;align-items:baseline;gap:12px}';
+  html+='.reg-name{font-size:16px;font-weight:900}';
+  html+='.reg-date{font-size:12px;color:#7eceff}';
+  html+='.reg-body{border:1px solid #d0d8e8;border-top:none;border-radius:0 0 6px 6px;padding:14px}';
+  html+='.stitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin:16px 0 8px}';
+  html+='.stitle:first-child{margin-top:0}';
+  html+='.course-block{margin-bottom:8px;border:1px solid #d0d8e8;border-radius:5px;overflow:hidden}';
+  html+='.course-head{background:#1e4a75;color:#fff;padding:5px 10px;display:flex;gap:10px;align-items:baseline}';
+  html+='.c-num{font-weight:900;font-size:12px;min-width:40px}';
+  html+='.c-time{color:#7eceff;font-weight:700;min-width:52px;font-size:11px}';
+  html+='.c-label{flex:1;font-size:11px}';
+  html+='.c-dist{color:#aac;font-size:10px}';
+  html+='.slot-row{padding:5px 10px;border-bottom:1px solid #eef;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;font-size:11px}';
   html+='.slot-row:last-child{border-bottom:none}';
-  html+='.slot-label{font-size:10px;font-weight:700;color:#1e4a75;min-width:65px;padding-top:2px}';
-  html+='.slot-boat{font-weight:700;color:#07111f;min-width:130px}';
-  html+='.slot-oar{color:#555;min-width:120px}';
-  html+='.slot-rowers{flex:1;color:#333}';
-  html+='.rower-item{display:inline-flex;align-items:center;gap:3px;margin:1px 4px 1px 0;padding:1px 6px;background:#eef3fa;border-radius:10px;font-size:10px}';
-  html+='.lic{color:#888;font-family:monospace;font-size:9px}';
-  html+='.badge{background:#1e4a75;color:#fff;border-radius:3px;padding:0 3px;font-size:8px;margin-left:2px}';
-  html+='@media print{.course-block{page-break-inside:avoid}}';
+  html+='.sl{font-size:9px;font-weight:700;color:#1e4a75;min-width:60px;padding-top:2px}';
+  html+='.sb{font-weight:700;color:#07111f;min-width:120px}';
+  html+='.so{color:#555;min-width:110px}';
+  html+='.sr{flex:1;color:#333}';
+  html+='.ri{display:inline-flex;align-items:center;gap:3px;margin:1px 3px 1px 0;padding:1px 5px;background:#eef3fa;border-radius:8px;font-size:10px}';
+  html+='.lic{color:#1e4a75;font-family:monospace;font-size:9px;font-weight:700}';
+  html+='.bdg{background:#1e4a75;color:#fff;border-radius:3px;padding:0 3px;font-size:8px;margin-left:2px}';
+  html+='@media print{.reg-block{page-break-after:always}.reg-block:last-child{page-break-after:auto}.course-block{page-break-inside:avoid}}';
   html+='</style></head><body>';
   html+='<h1>R.C.N.S.M. &ndash; Bateaux &amp; Avirons 2026</h1>';
-  html+='<p style="color:#666;font-size:10px;margin-top:2px">G&eacute;n&eacute;r&eacute; le '+new Date().toLocaleDateString("fr-BE")+'</p>';
+  html+='<p style="color:#666;font-size:10px;margin-top:2px;margin-bottom:18px">G&eacute;n&eacute;r&eacute; le '+new Date().toLocaleDateString("fr-BE")+'</p>';
 
   COMPS.forEach(function(comp){
     var activeCourses=comp.courses.filter(function(cr){
@@ -1791,151 +1797,100 @@ function exportPdfBateaux(){
     });
     if(!activeCourses.length) return;
 
-    html+='<h2>'+comp.name+' &ndash; '+fd(comp.date)+'</h2>';
+    html+='<div class="reg-block">';
+    html+='<div class="reg-header"><span class="reg-name">'+comp.name+'</span><span class="reg-date">'+fd(comp.date)+'</span></div>';
+    html+='<div class="reg-body">';
 
+    // ── 1. Compositions ──
+    html+='<div class="stitle">&#9973; Compositions de bateaux</div>';
     activeCourses.forEach(function(cr){
       var slots=getSlots(comp.id,cr.c);
       var allReg=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
-
       html+='<div class="course-block">';
-      html+='<div class="course-head">';
-      html+='<span class="c-num">'+cr.c+'</span>';
-      html+='<span class="c-time">'+cr.t+'</span>';
-      html+='<span class="c-label">'+cr.l+'</span>';
-      html+='<span class="c-dist">'+cr.d+' &bull; '+allReg.length+' rameur'+(allReg.length>1?"s":"")+'</span>';
-      html+='</div>';
-
+      html+='<div class="course-head"><span class="c-num">'+cr.c+'</span><span class="c-time">'+cr.t+'</span><span class="c-label">'+cr.l+'</span><span class="c-dist">'+cr.d+' &bull; '+allReg.length+' rameur'+(allReg.length>1?"s":"")+'</span></div>';
       slots.forEach(function(sl,si){
-        html+='<div class="slot-row">';
-        // Label
-        var slotLbl=slots.length>1?"Bateau "+(si+1)+" / "+slots.length:"Bateau";
-        html+='<div class="slot-label">'+slotLbl+'</div>';
-        // Bateau
-        html+='<div class="slot-boat">'+(sl.bateau||'<span style="color:#bbb">—</span>')+'</div>';
-        // Avirons
-        html+='<div class="slot-oar">'+(sl.aviron||'<span style="color:#bbb">—</span>')+'</div>';
-        // Rameurs assignés
-        html+='<div class="slot-rowers">';
-        var hasAssigned=false;
-        sl.rowers.forEach(function(r,seat){
-          if(r){
-            hasAssigned=true;
-            var g=r.gender||"M";
-            html+='<span class="rower-item">';
-            html+=(g==="M"?"&#9794;":"&#9792;")+" ";
-            html+=r.name;
-            if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
-            html+='<span class="badge">'+r.cat+'</span>';
-            html+='</span>';
-          }
+        html+='<div class="slot-row"><div class="sl">'+(slots.length>1?"Bateau "+(si+1):"Bateau")+'</div>';
+        html+='<div class="sb">'+(sl.bateau||'<span style="color:#bbb">—</span>')+'</div>';
+        html+='<div class="so">'+(sl.aviron||'<span style="color:#bbb">—</span>')+'</div>';
+        html+='<div class="sr">';
+        var hasA=false;
+        sl.rowers.forEach(function(r){
+          if(!r) return; hasA=true;
+          var g=r.gender||"M";
+          html+='<span class="ri">'+(g==="M"?"&#9794;":"&#9792;")+' '+r.name;
+          if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
+          html+='<span class="bdg">'+r.cat+'</span></span>';
         });
-        if(!hasAssigned){
-          // Afficher tous les inscrits si aucun assigné (slot non rempli)
-          allReg.forEach(function(r){
-            var g=r.gender||"M";
-            html+='<span class="rower-item" style="opacity:.5">';
-            html+=(g==="M"?"&#9794;":"&#9792;")+" "+r.name;
-            if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
-            html+='<span class="badge">'+r.cat+'</span>';
-            html+='</span>';
-          });
-        }
-        html+='</div>';
-        html+='</div>'; // slot-row
+        if(!hasA) allReg.forEach(function(r){
+          var g=r.gender||"M";
+          html+='<span class="ri" style="opacity:.5">'+(g==="M"?"&#9794;":"&#9792;")+' '+r.name;
+          if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
+          html+='<span class="bdg">'+r.cat+'</span></span>';
+        });
+        html+='</div></div>';
       });
-
-      html+='</div>'; // course-block
+      html+='</div>';
     });
-  });
 
-  // ── Section 2 : Récapitulatif bateaux & avirons ──
-  html+='<div style="page-break-before:always"></div>';
-  html+='<h2 style="margin-top:0">&#9873; R&eacute;capitulatif bateaux &amp; avirons</h2>';
-
-  var bMap={}, aMap={};
-  COMPS.forEach(function(comp){
-    if(!assignments[comp.id]) return;
-    Object.keys(assignments[comp.id]).forEach(function(key){
+    // ── 2. Bateaux & avirons ──
+    var bMap={},aMap={};
+    if(assignments[comp.id]) Object.keys(assignments[comp.id]).forEach(function(key){
       var a=assignments[comp.id][key];
       var code=a.courseCode||key.split("__")[0];
       var cr=comp.courses.find(function(x){return x.c===code;});
-      var label=cr?(cr.c+' '+cr.l+' ('+comp.name+')'): (comp.name+' '+code);
+      var label=cr?('<b>'+cr.c+'</b> '+cr.l+' — '+cr.t):code;
       if(a.bateau){if(!bMap[a.bateau])bMap[a.bateau]=[];bMap[a.bateau].push(label);}
       if(a.aviron){if(!aMap[a.aviron])aMap[a.aviron]=[];aMap[a.aviron].push(label);}
     });
-  });
+    html+='<div style="display:flex;gap:20px;flex-wrap:wrap">';
+    function mkTable(map,title,icon){
+      var keys=Object.keys(map).sort();
+      var t='<div style="flex:1;min-width:220px"><div class="stitle">'+ icon+' '+title+'</div>';
+      if(keys.length){
+        t+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
+        t+='<th style="text-align:left;padding:3px 6px;background:#e8edf5;font-size:10px">'+title+'</th>';
+        t+='<th style="text-align:left;padding:3px 6px;background:#e8edf5;font-size:10px">Courses</th></tr></thead><tbody>';
+        keys.forEach(function(k,i){
+          t+='<tr style="background:'+(i%2?"#f5f8fc":"#fff")+'"><td style="padding:4px 6px;border-bottom:1px solid #e8edf5;font-weight:700;font-size:12px">'+k+'</td>';
+          t+='<td style="padding:4px 6px;border-bottom:1px solid #e8edf5;font-size:11px;color:#333">'+map[k].join('<br>')+'</td></tr>';
+        });
+        t+='</tbody></table>';
+      } else t+='<p style="color:#aaa;font-size:11px;margin:4px 0">Aucun assign&eacute;</p>';
+      return t+'</div>';
+    }
+    html+=mkTable(bMap,"Bateaux","&#9973;");
+    html+=mkTable(aMap,"Avirons","&#129528;");
+    html+='</div>';
 
-  html+='<div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:20px">';
-
-  // Bateaux
-  html+='<div style="flex:1;min-width:260px">';
-  html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin-bottom:8px">Bateaux</div>';
-  var bKeys=Object.keys(bMap).sort();
-  if(bKeys.length){
-    html+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
-    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Bateau</th>';
-    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Courses</th></tr></thead><tbody>';
-    bKeys.forEach(function(b){
-      html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-weight:700;font-size:12px">'+b+'</td>';
-      html+='<td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-size:11px;color:#444">'+bMap[b].join('<br>')+'</td></tr>';
-    });
-    html+='</tbody></table>';
-  } else html+='<p style="color:#999;font-size:11px">Aucun bateau assign&eacute;</p>';
-  html+='</div>';
-
-  // Avirons
-  html+='<div style="flex:1;min-width:260px">';
-  html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin-bottom:8px">Paires d\'avirons</div>';
-  var aKeys=Object.keys(aMap).sort();
-  if(aKeys.length){
-    html+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
-    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Avirons</th>';
-    html+='<th style="text-align:left;padding:4px 6px;background:#e8edf5;font-size:11px">Courses</th></tr></thead><tbody>';
-    aKeys.forEach(function(a){
-      html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-weight:700;font-size:12px">'+a+'</td>';
-      html+='<td style="padding:4px 6px;border-bottom:1px solid #e0e8f0;font-size:11px;color:#444">'+aMap[a].join('<br>')+'</td></tr>';
-    });
-    html+='</tbody></table>';
-  } else html+='<p style="color:#999;font-size:11px">Aucun aviron assign&eacute;</p>';
-  html+='</div>';
-  html+='</div>'; // flex
-
-  // ── Section 3 : Résumé par rameur ──
-  html+='<div style="page-break-before:always"></div>';
-  html+='<h2 style="margin-top:0">&#128388; R&eacute;sum&eacute; par rameur</h2>';
-  COMPS.forEach(function(comp){
+    // ── 3. Rameurs ──
+    html+='<div class="stitle">&#128388; Rameurs inscrits</div>';
     var rows=[];
     rowers.forEach(function(rower){
       if(regs[rower.id]&&regs[rower.id][comp.id]&&regs[rower.id][comp.id].size>0)
         rows.push({r:rower,codes:Array.from(regs[rower.id][comp.id]).sort()});
     });
-    if(!rows.length) return;
-    html+='<div style="margin-bottom:16px">';
-    html+='<div style="font-size:12px;font-weight:700;color:#1e4a75;background:#e8edf5;padding:5px 8px;border-radius:4px;margin-bottom:6px">'+comp.name+' &ndash; '+fd(comp.date)+'</div>';
-    html+='<table style="width:100%;border-collapse:collapse">';
-    html+='<thead><tr>';
-    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Rameur</th>';
-    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Cat.</th>';
-    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Licence</th>';
-    html+='<th style="text-align:left;padding:5px 8px;background:#07111f;color:#fff;font-size:11px">Courses inscrites</th>';
-    html+='</tr></thead><tbody>';
-    rows.forEach(function(row,i){
-      var g=row.r.gender||G[row.r.id]||"M";
-      var bg=i%2===0?'#fff':'#f5f8fc';
-      var courses=row.codes.map(function(code){
-        var cr=comp.courses.find(function(x){return x.c===code;});
-        return cr?('<b>'+code+'</b> '+cr.l+' <span style="color:#999">'+cr.t+'</span>'):code;
-      }).join('&nbsp;·&nbsp;');
-      html+='<tr style="background:'+bg+'">';
-      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-weight:700;font-size:12px">';
-      html+=(g==="M"?'<span style="color:#3a9fd6">&#9794;</span>':'<span style="color:#d64fa0">&#9792;</span>')+' '+row.r.name;
-      html+='</td>';
-      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-size:11px">'+( row.r.cat||'—')+'</td>';
-      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-size:11px;font-family:monospace;color:#1e4a75">'+( row.r.licence||'—')+'</td>';
-      html+='<td style="padding:5px 8px;border-bottom:1px solid #e0e8f0;font-size:11px">'+courses+'</td>';
-      html+='</tr>';
-    });
-    html+='</tbody></table></div>';
+    if(rows.length){
+      html+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
+      [["Rameur",""],["Cat.","55px"],["Licence","70px"],["Courses",""]]
+        .forEach(function(th){html+='<th style="text-align:left;padding:4px 8px;background:#1e4a75;color:#fff;font-size:10px'+(th[1]?";width:"+th[1]:"")+'">'+th[0]+'</th>';});
+      html+='</tr></thead><tbody>';
+      rows.forEach(function(row,i){
+        var g=row.r.gender||G[row.r.id]||"M";
+        var courses=row.codes.map(function(code){
+          var cr=comp.courses.find(function(x){return x.c===code;});
+          return cr?('<b>'+code+'</b> '+cr.l):code;
+        }).join('&nbsp;·&nbsp;');
+        html+='<tr style="background:'+(i%2?"#f5f8fc":"#fff")+'">';
+        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-weight:700;font-size:12px">'+(g==="M"?'<span style="color:#3a9fd6">&#9794;</span>':'<span style="color:#d64fa0">&#9792;</span>')+' '+row.r.name+'</td>';
+        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-size:11px">'+(row.r.cat||"—")+'</td>';
+        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-size:11px;font-family:monospace;color:#1e4a75;font-weight:700">'+(row.r.licence||"—")+'</td>';
+        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-size:11px">'+courses+'</td>';
+        html+='</tr>';
+      });
+      html+='</tbody></table>';
+    } else html+='<p style="color:#aaa;font-size:11px;margin:4px 0">Aucun rameur inscrit</p>';
+
+    html+='</div></div>'; // reg-body + reg-block
   });
 
   html+='</body></html>';
