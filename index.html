@@ -1770,49 +1770,102 @@ function getSlots(compId, courseCode){
 }
 
 function exportPdfBateaux(){
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8">';
+  var DATE=new Date().toLocaleDateString("fr-BE");
+  var CLUB="R.C.N.S.M.";
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+CLUB+' – Bateaux & Avirons 2026</title>';
   html+='<style>';
-  html+='body{font-family:Arial,sans-serif;font-size:12px;color:#000;margin:24px}';
-  html+='h1{font-size:17px;margin-bottom:2px;color:#07111f}';
-  html+='.reg-block{margin-bottom:30px}';
-  html+='.reg-header{background:#07111f;color:#fff;padding:10px 14px;border-radius:6px 6px 0 0;display:flex;align-items:baseline;gap:12px}';
-  html+='.reg-name{font-size:16px;font-weight:900}';
-  html+='.reg-date{font-size:12px;color:#7eceff}';
-  html+='.reg-body{border:1px solid #d0d8e8;border-top:none;border-radius:0 0 6px 6px;padding:14px}';
-  html+='.stitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin:16px 0 8px}';
-  html+='.stitle:first-child{margin-top:0}';
+  // ── Mise en page A4 ──
+  html+='@page{size:A4 portrait;margin:15mm 12mm}';
+  html+='*{box-sizing:border-box}';
+  html+='body{font-family:Arial,sans-serif;font-size:11px;color:#07111f;margin:0;padding:0}';
+  // ── Page générique ──
+  html+='.page{width:100%;min-height:267mm;page-break-after:always;display:flex;flex-direction:column}';
+  html+='.page:last-child{page-break-after:auto}';
+  // ── Header de page ──
+  html+='.ph{background:#07111f;color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;border-radius:5px}';
+  html+='.ph-club{font-size:13px;font-weight:900;letter-spacing:.5px}';
+  html+='.ph-reg{font-size:13px;font-weight:700;color:#7eceff}';
+  html+='.ph-date{font-size:10px;color:#aaa}';
+  html+='.ph-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#7eceff;border:1px solid #7eceff;padding:2px 8px;border-radius:10px}';
+  // ── Page de titre ──
+  html+='.cover{justify-content:center;align-items:center;text-align:center;background:#f5f8fc}';
+  html+='.cover-title{font-size:28px;font-weight:900;color:#07111f;margin-bottom:6px}';
+  html+='.cover-sub{font-size:14px;color:#1e4a75;margin-bottom:4px}';
+  html+='.cover-date{font-size:11px;color:#888}';
+  html+='.cover-line{width:60px;height:3px;background:#1e4a75;margin:16px auto}';
+  html+='.cover-stats{display:flex;gap:30px;justify-content:center;margin-top:24px}';
+  html+='.cover-stat{text-align:center}';
+  html+='.cover-stat-n{font-size:32px;font-weight:900;color:#1e4a75}';
+  html+='.cover-stat-l{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px}';
+  // ── Compositions ──
   html+='.course-block{margin-bottom:8px;border:1px solid #d0d8e8;border-radius:5px;overflow:hidden}';
   html+='.course-head{background:#1e4a75;color:#fff;padding:5px 10px;display:flex;gap:10px;align-items:baseline}';
-  html+='.c-num{font-weight:900;font-size:12px;min-width:40px}';
-  html+='.c-time{color:#7eceff;font-weight:700;min-width:52px;font-size:11px}';
+  html+='.c-num{font-weight:900;font-size:12px;min-width:38px}';
+  html+='.c-time{color:#7eceff;font-weight:700;min-width:50px;font-size:11px}';
   html+='.c-label{flex:1;font-size:11px}';
   html+='.c-dist{color:#aac;font-size:10px}';
   html+='.slot-row{padding:5px 10px;border-bottom:1px solid #eef;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;font-size:11px}';
   html+='.slot-row:last-child{border-bottom:none}';
-  html+='.sl{font-size:9px;font-weight:700;color:#1e4a75;min-width:60px;padding-top:2px}';
-  html+='.sb{font-weight:700;color:#07111f;min-width:120px}';
-  html+='.so{color:#555;min-width:110px}';
+  html+='.sl{font-size:9px;font-weight:700;color:#1e4a75;min-width:58px;padding-top:2px}';
+  html+='.sb{font-weight:700;color:#07111f;min-width:110px}';
+  html+='.so{color:#555;min-width:100px}';
   html+='.sr{flex:1;color:#333}';
-  html+='.ri{display:inline-flex;align-items:center;gap:3px;margin:1px 3px 1px 0;padding:1px 5px;background:#eef3fa;border-radius:8px;font-size:10px}';
+  html+='.ri{display:inline-flex;align-items:center;gap:3px;margin:1px 3px 1px 0;padding:2px 6px;background:#eef3fa;border-radius:8px;font-size:10px}';
   html+='.lic{color:#1e4a75;font-family:monospace;font-size:9px;font-weight:700}';
   html+='.bdg{background:#1e4a75;color:#fff;border-radius:3px;padding:0 3px;font-size:8px;margin-left:2px}';
-  html+='@media print{.reg-block{page-break-after:always}.reg-block:last-child{page-break-after:auto}.course-block{page-break-inside:avoid}}';
+  // ── Tables ──
+  html+='table{width:100%;border-collapse:collapse;margin-bottom:8px}';
+  html+='thead th{background:#1e4a75;color:#fff;padding:5px 8px;text-align:left;font-size:10px;font-weight:700}';
+  html+='tbody tr:nth-child(even){background:#f5f8fc}';
+  html+='tbody td{padding:5px 8px;border-bottom:1px solid #e8edf5;font-size:11px}';
+  html+='.sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1e4a75;border-bottom:2px solid #1e4a75;padding-bottom:3px;margin:0 0 10px}';
+  html+='.two-col{display:flex;gap:16px}';
+  html+='.two-col>div{flex:1;min-width:0}';
+  // ── Footer ──
+  html+='.pfoot{margin-top:auto;padding-top:8px;border-top:1px solid #e0e8f0;display:flex;justify-content:space-between;font-size:9px;color:#aaa}';
   html+='</style></head><body>';
-  html+='<h1>R.C.N.S.M. &ndash; Bateaux &amp; Avirons 2026</h1>';
-  html+='<p style="color:#666;font-size:10px;margin-top:2px;margin-bottom:18px">G&eacute;n&eacute;r&eacute; le '+new Date().toLocaleDateString("fr-BE")+'</p>';
 
+  // Statistiques pour la page de couverture
+  var totalReg=new Set(), totalComps=0;
+  COMPS.forEach(function(comp){
+    var active=comp.courses.filter(function(cr){
+      return rowers.some(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
+    });
+    if(active.length){totalComps++; active.forEach(function(){});}
+    rowers.forEach(function(r){if(regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].size>0)totalReg.add(r.id);});
+  });
+
+  // ── PAGE DE COUVERTURE ──
+  html+='<div class="page cover">';
+  html+='<div style="background:#07111f;color:#fff;padding:40px;border-radius:10px;width:80%;text-align:center">';
+  html+='<div class="cover-title">'+CLUB+'</div>';
+  html+='<div class="cover-sub">Bateaux &amp; Avirons 2026</div>';
+  html+='<div class="cover-line"></div>';
+  html+='<div class="cover-stats">';
+  html+='<div class="cover-stat"><div class="cover-stat-n">'+totalComps+'</div><div class="cover-stat-l">R&eacute;gates</div></div>';
+  html+='<div class="cover-stat"><div class="cover-stat-n">'+totalReg.size+'</div><div class="cover-stat-l">Rameurs</div></div>';
+  html+='</div>';
+  html+='<div class="cover-date" style="margin-top:20px;color:#aaa">G&eacute;n&eacute;r&eacute; le '+DATE+'</div>';
+  html+='</div>';
+  html+='</div>';
+
+  // ── BOUCLE PAR RÉGATE ──
   COMPS.forEach(function(comp){
     var activeCourses=comp.courses.filter(function(cr){
       return rowers.some(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
     });
     if(!activeCourses.length) return;
 
-    html+='<div class="reg-block">';
-    html+='<div class="reg-header"><span class="reg-name">'+comp.name+'</span><span class="reg-date">'+fd(comp.date)+'</span></div>';
-    html+='<div class="reg-body">';
+    function pageHeader(section){
+      return '<div class="ph"><span class="ph-club">'+CLUB+'</span><span class="ph-reg">'+comp.name+'</span><span class="ph-section">'+section+'</span><span class="ph-date">'+fd(comp.date)+'</span></div>';
+    }
+    function pageFooter(n,tot){
+      return '<div class="pfoot"><span>'+comp.name+' &ndash; '+fd(comp.date)+'</span><span>'+CLUB+' &bull; Bateaux &amp; Avirons 2026</span><span>Page '+n+'/'+tot+'</span></div>';
+    }
 
-    // ── 1. Compositions ──
-    html+='<div class="stitle">&#9973; Compositions de bateaux</div>';
+    // ── PAGE 1/3 : Compositions ──
+    html+='<div class="page">';
+    html+=pageHeader('&#9973; Compositions');
     activeCourses.forEach(function(cr){
       var slots=getSlots(comp.id,cr.c);
       var allReg=rowers.filter(function(r){return regs[r.id]&&regs[r.id][comp.id]&&regs[r.id][comp.id].has(cr.c);});
@@ -1841,9 +1894,11 @@ function exportPdfBateaux(){
       });
       html+='</div>';
     });
+    html+=pageFooter(1,3);
+    html+='</div>'; // page
 
-    // ── 2. Bateaux & avirons ──
-    var bMap={},aMap={};
+    // ── PAGE 2/3 : Bateaux & Avirons ──
+    var bMap={}, aMap={};
     if(assignments[comp.id]) Object.keys(assignments[comp.id]).forEach(function(key){
       var a=assignments[comp.id][key];
       var code=a.courseCode||key.split("__")[0];
@@ -1852,59 +1907,68 @@ function exportPdfBateaux(){
       if(a.bateau){if(!bMap[a.bateau])bMap[a.bateau]=[];bMap[a.bateau].push(label);}
       if(a.aviron){if(!aMap[a.aviron])aMap[a.aviron]=[];aMap[a.aviron].push(label);}
     });
-    html+='<div style="display:flex;gap:20px;flex-wrap:wrap">';
-    function mkTable(map,title,icon){
-      var keys=Object.keys(map).sort();
-      var t='<div style="flex:1;min-width:220px"><div class="stitle">'+ icon+' '+title+'</div>';
-      if(keys.length){
-        t+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
-        t+='<th style="text-align:left;padding:3px 6px;background:#e8edf5;font-size:10px">'+title+'</th>';
-        t+='<th style="text-align:left;padding:3px 6px;background:#e8edf5;font-size:10px">Courses</th></tr></thead><tbody>';
-        keys.forEach(function(k,i){
-          t+='<tr style="background:'+(i%2?"#f5f8fc":"#fff")+'"><td style="padding:4px 6px;border-bottom:1px solid #e8edf5;font-weight:700;font-size:12px">'+k+'</td>';
-          t+='<td style="padding:4px 6px;border-bottom:1px solid #e8edf5;font-size:11px;color:#333">'+map[k].join('<br>')+'</td></tr>';
-        });
-        t+='</tbody></table>';
-      } else t+='<p style="color:#aaa;font-size:11px;margin:4px 0">Aucun assign&eacute;</p>';
-      return t+'</div>';
-    }
-    html+=mkTable(bMap,"Bateaux","&#9973;");
-    html+=mkTable(aMap,"Avirons","&#129528;");
+    html+='<div class="page">';
+    html+=pageHeader('&#9973; Bateaux &amp; Avirons');
+    html+='<div class="two-col">';
+    // Bateaux
+    html+='<div><div class="sec-title">&#9973; Bateaux utilis&eacute;s</div>';
+    var bKeys=Object.keys(bMap).sort();
+    if(bKeys.length){
+      html+='<table><thead><tr><th>Bateau</th><th>Courses</th></tr></thead><tbody>';
+      bKeys.forEach(function(b){
+        html+='<tr><td style="font-weight:700;font-size:12px">'+b+'</td><td>'+bMap[b].join('<br>')+'</td></tr>';
+      });
+      html+='</tbody></table>';
+    } else html+='<p style="color:#aaa">Aucun bateau assign&eacute;</p>';
     html+='</div>';
+    // Avirons
+    html+='<div><div class="sec-title">&#129528; Paires d\'avirons</div>';
+    var aKeys=Object.keys(aMap).sort();
+    if(aKeys.length){
+      html+='<table><thead><tr><th>Avirons</th><th>Courses</th></tr></thead><tbody>';
+      aKeys.forEach(function(a){
+        html+='<tr><td style="font-weight:700;font-size:12px">'+a+'</td><td>'+aMap[a].join('<br>')+'</td></tr>';
+      });
+      html+='</tbody></table>';
+    } else html+='<p style="color:#aaa">Aucun aviron assign&eacute;</p>';
+    html+='</div>';
+    html+='</div>'; // two-col
+    html+=pageFooter(2,3);
+    html+='</div>'; // page
 
-    // ── 3. Rameurs ──
-    html+='<div class="stitle">&#128388; Rameurs inscrits</div>';
+    // ── PAGE 3/3 : Rameurs ──
     var rows=[];
     rowers.forEach(function(rower){
       if(regs[rower.id]&&regs[rower.id][comp.id]&&regs[rower.id][comp.id].size>0)
         rows.push({r:rower,codes:Array.from(regs[rower.id][comp.id]).sort()});
     });
+    html+='<div class="page">';
+    html+=pageHeader('&#128388; Rameurs');
+    html+='<div class="sec-title">&#128388; Rameurs inscrits</div>';
     if(rows.length){
-      html+='<table style="width:100%;border-collapse:collapse"><thead><tr>';
-      [["Rameur",""],["Cat.","55px"],["Licence","70px"],["Courses",""]]
-        .forEach(function(th){html+='<th style="text-align:left;padding:4px 8px;background:#1e4a75;color:#fff;font-size:10px'+(th[1]?";width:"+th[1]:"")+'">'+th[0]+'</th>';});
-      html+='</tr></thead><tbody>';
-      rows.forEach(function(row,i){
+      html+='<table><thead><tr><th>Rameur</th><th style="width:50px">Cat.</th><th style="width:80px">Licence</th><th>Courses inscrites</th></tr></thead><tbody>';
+      rows.forEach(function(row){
         var g=genderOf(row.r);
         var courses=row.codes.map(function(code){
           var cr=comp.courses.find(function(x){return x.c===code;});
           return cr?('<b>'+code+'</b> '+cr.l):code;
-        }).join('&nbsp;·&nbsp;');
-        html+='<tr style="background:'+(i%2?"#f5f8fc":"#fff")+'">';
-        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-weight:700;font-size:12px">'+(g==="M"?'<span style="color:#3a9fd6">&#9794;</span>':'<span style="color:#d64fa0">&#9792;</span>')+' '+row.r.name+'</td>';
-        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-size:11px">'+(row.r.cat||"—")+'</td>';
-        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-size:11px;font-family:monospace;color:#1e4a75;font-weight:700">'+(row.r.licence||"—")+'</td>';
-        html+='<td style="padding:4px 8px;border-bottom:1px solid #e8edf5;font-size:11px">'+courses+'</td>';
+        }).join(' &nbsp;·&nbsp; ');
+        html+='<tr>';
+        html+='<td style="font-weight:700;font-size:12px">'+(g==="M"?'<span style="color:#3a9fd6">&#9794;</span>':'<span style="color:#d64fa0">&#9792;</span>')+' '+row.r.name+'</td>';
+        html+='<td>'+( row.r.cat||'—')+'</td>';
+        html+='<td style="font-family:monospace;color:#1e4a75;font-weight:700">'+( row.r.licence||'—')+'</td>';
+        html+='<td>'+courses+'</td>';
         html+='</tr>';
       });
       html+='</tbody></table>';
-    } else html+='<p style="color:#aaa;font-size:11px;margin:4px 0">Aucun rameur inscrit</p>';
+    } else html+='<p style="color:#aaa">Aucun rameur inscrit</p>';
+    html+=pageFooter(3,3);
+    html+='</div>'; // page
 
-    html+='</div></div>'; // reg-body + reg-block
-  });
+  }); // COMPS
 
   html+='</body></html>';
-  var w=window.open("","_blank","width=960,height=750");
+  var w=window.open("","_blank","width=900,height=700");
   w.document.write(html);
   w.document.close();
   setTimeout(function(){w.print();},600);
