@@ -604,7 +604,7 @@ function elig(rower,course){
   // Beg/Déb: liste explicite de rameurs
   if(course.rowerIds!==undefined) return course.rowerIds.indexOf(rower.id)!==-1?"normal":false;
 
-  var g=rower.gender||G[rower.id]||"M", cat=rower.cat, dist=course.d||"";
+  var g=genderOf(rower), cat=rower.cat, dist=course.d||"";
   var catM=course.catM||[], catW=course.catW||[];
   var isOpen=catM.length>0&&catW.length>0;
 
@@ -837,7 +837,7 @@ function renderPresences(){
   }
   var h="";
   rowers.forEach(function(rower){
-    var g=rower.gender||G[rower.id]||"M";
+    var g=genderOf(rower);
     var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
     var col=avcol(rower.id);
     var initials=(rower.name||"?").split(" ").map(function(w){return w[0];}).join("").substring(0,2).toUpperCase();
@@ -915,7 +915,7 @@ function renderTable(){
   hh+='<th style="text-align:center;padding:5px 3px;font-size:9px;color:'+color+'">Heure</th>';
   hh+='<th style="text-align:left;padding:5px 8px;font-size:9px;color:'+color+';border-right:2px solid var(--border)">&#201;preuve</th>';
   cols.forEach(function(rower){
-    var g=rower.gender||G[rower.id]||"M";
+    var g=genderOf(rower);
     var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
     hh+='<th style="padding:5px 3px;vertical-align:bottom;text-align:center">';
     hh+='<div style="display:flex;flex-direction:column;align-items:center;gap:2px">';
@@ -983,7 +983,7 @@ function openSummary(){
     if(!rows.length)return;
     h+='<div class="csect"><div class="csect-head" style="color:'+comp.color+'">'+fd(comp.date)+' &#8211; '+comp.name+'</div>';
     rows.forEach(function(row){
-      var g=row.r.gender||G[row.r.id]||"M";
+      var g=genderOf(row.r);
       var cc="cu"+(row.r.cat||"").toLowerCase().replace("u","");
       var details=row.codes.map(function(code){
         var cr=comp.courses.find(function(x){return x.c===code;});
@@ -1043,7 +1043,7 @@ function exportCSV(){
   var lines=["Rameur;Genre;Cat;R&#233;gate;Date;Code;Heure;&#201;preuve;Distance;Mont&#233;e"];
   rowers.forEach(function(rower){
     if(!regs[rower.id])return;
-    var g=rower.gender||G[rower.id]||"M";
+    var g=genderOf(rower);
     COMPS.forEach(function(comp){
       if(!regs[rower.id][comp.id])return;
       Array.from(regs[rower.id][comp.id]).sort().forEach(function(code){
@@ -1236,7 +1236,7 @@ function renderBateaux(){
     h+='<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:5px">Rameurs inscrits</div>';
     h+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">';
     registeredRowers.forEach(function(r){
-      var g=r.gender||G[r.id]||"M";
+      var g=genderOf(r);
       var cc="cu"+(r.cat||"").toLowerCase().replace("u","");
       h+='<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--hull);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--text)">';
       h+='<span style="font-size:10px;color:'+(g==="M"?"#3a9fd6":"#d64fa0")+'">'+(g==="M"?"♂":"♀")+'</span>';
@@ -1302,7 +1302,17 @@ function renderBateaux(){
 
 
 
-/* ══ GESTION (Rameurs / Bateaux / Avirons) ══ */
+/* Helper genre : priorité au champ gender, fallback sur la catégorie, puis G[], puis "M" */
+function genderOf(rower){
+  if(rower.gender) return rower.gender;
+  if(G[rower.id]) return G[rower.id];
+  // Déduire depuis la catégorie : "W" dans catM/catW ou cat contient W
+  var c=rower.cat||"";
+  if(c==="MW"||c==="W"||c.indexOf("W")===0) return "W";
+  return "M";
+}
+
+
 var activeGTab = "bateaux";
 var activeGBtype = "1x";
 var BTYPES = ["1x","2x","2-","4x","4-","4+","8+","autre"];
@@ -1342,7 +1352,7 @@ function renderGRameurs(){
     h='<div style="color:var(--muted);font-size:11px;padding:8px 0">Aucun rameur dans Firebase.</div>';
   }
   rowers.forEach(function(rower){
-    var g=rower.gender||"M";
+    var g=rowegenderOf(r);
     var cc="cu"+(rower.cat||"").toLowerCase().replace("u","");
     h+='<div style="display:flex;align-items:center;gap:7px;padding:5px 8px;background:var(--hull);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;flex-wrap:wrap">';
     h+='<span style="font-size:10px;color:'+(g==="M"?"#7eceff":"#ffb3d1")+'">'+(g==="M"?"&#9794;":"&#9792;")+'</span>';
@@ -1595,7 +1605,7 @@ function renderSummaryBateaux(){
         var displayRowers=hasAssigned?sl.rowers.filter(function(r){return r!==null;}):allReg;
         displayRowers.forEach(function(r){
           if(!r) return;
-          var g=r.gender||G[r.id]||"M";
+          var g=genderOf(r);
           ch+='<span style="display:inline-flex;align-items:center;gap:3px;padding:1px 6px;background:var(--navy);border:1px solid var(--border);border-radius:12px;font-size:10px">';
           ch+='<span style="font-size:8px;color:'+(g==="M"?"#7eceff":"#ffb3d1")+'">'+(g==="M"?"♂":"♀")+'</span>';
           ch+=xe(r.name);
@@ -1816,13 +1826,13 @@ function exportPdfBateaux(){
         var hasA=false;
         sl.rowers.forEach(function(r){
           if(!r) return; hasA=true;
-          var g=r.gender||"M";
+          var g=genderOf(r);
           html+='<span class="ri">'+(g==="M"?"&#9794;":"&#9792;")+' '+r.name;
           if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
           html+='<span class="bdg">'+r.cat+'</span></span>';
         });
         if(!hasA) allReg.forEach(function(r){
-          var g=r.gender||"M";
+          var g=genderOf(r);
           html+='<span class="ri" style="opacity:.5">'+(g==="M"?"&#9794;":"&#9792;")+' '+r.name;
           if(r.licence) html+=' <span class="lic">'+r.licence+'</span>';
           html+='<span class="bdg">'+r.cat+'</span></span>';
@@ -1875,7 +1885,7 @@ function exportPdfBateaux(){
         .forEach(function(th){html+='<th style="text-align:left;padding:4px 8px;background:#1e4a75;color:#fff;font-size:10px'+(th[1]?";width:"+th[1]:"")+'">'+th[0]+'</th>';});
       html+='</tr></thead><tbody>';
       rows.forEach(function(row,i){
-        var g=row.r.gender||G[row.r.id]||"M";
+        var g=genderOf(row.r);
         var courses=row.codes.map(function(code){
           var cr=comp.courses.find(function(x){return x.c===code;});
           return cr?('<b>'+code+'</b> '+cr.l):code;
